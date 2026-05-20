@@ -452,14 +452,8 @@ window.app = {
     // Calculator Logic
     calcState: {
         amount: 100000,
-        card: 'cube',
-        rates: {
-            cube: { eva: 3, ci: 3, cx: 3 }, // 模擬 CUBE 10% 等同於 3元=1哩 的極致優惠
-            hsbc: { eva: 20, ci: 20, cx: 20 },
-            dbs: { eva: 15, ci: 15, cx: 15 },
-            eva: { eva: 10, ci: 20, cx: 20 },
-            ci: { eva: 20, ci: 18, cx: 20 }
-        },
+        card: 'dbs_world',
+        spendType: 'domestic',
         targets: {
             eva: 35000,
             ci: 35000,
@@ -470,6 +464,114 @@ window.app = {
             'HKG': { eva: 20000, ci: 20000, cx: 15000 },
             'US': { eva: 100000, ci: 100000, cx: 60000 },
             'EUR': { eva: 100000, ci: 100000, cx: 60000 }
+        },
+        cards: {
+            dbs_world: {
+                name: '星展飛行世界商務卡',
+                issuer: '星展銀行',
+                earnType: '飛行積金',
+                sourceUrl: 'https://www.dbs.com.tw/personal-zh/cards/travelworld/index.html?pid=tw-pweb-personal-zh_cards_offers_epptravel_index_html-L',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: 20, ci: 20, cx: 20 },
+                    overseas: { eva: 15, ci: 15, cx: 15 },
+                    bonus: { eva: 15, ci: 15, cx: 15 }
+                },
+                notes: '官方列海外一般消費每 NT$15 累積 1 點飛行積金，國內一般消費每 NT$20 累積 1 點；飛行積金可兌換亞洲萬里通、長榮、華夏哩程等。需留意不回饋項目與銀行對一般消費的認定。'
+            },
+            hsbc_light: {
+                name: '滙豐旅人輕旅卡',
+                issuer: '滙豐銀行',
+                earnType: '旅遊積分',
+                sourceUrl: 'https://www.hsbc.com.tw/content/hsbc/tw/zh_tw/credit-cards/products/travel/visa-light/',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: 20, ci: 40, cx: 20 },
+                    overseas: { eva: 20, ci: 40, cx: 20 },
+                    bonus: { eva: 20, ci: 40, cx: 20 }
+                },
+                notes: '官方列國內外消費 NT$20 = 1 旅遊積分、回饋無上限；官方頁另載自 2025/1/1 起兌換中華航空哩程比例為 2 旅遊積分 = 1 哩，因此華航欄位以有效 NT$40 = 1 哩估算。其他夥伴仍需以官方兌換頁為準。'
+            },
+            hsbc_infinite: {
+                name: '滙豐旅人無限卡',
+                issuer: '滙豐銀行',
+                earnType: '旅遊積分',
+                sourceUrl: 'https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/product-tour.pdf',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: 18, ci: 36, cx: 18 },
+                    overseas: { eva: 10, ci: 20, cx: 10 },
+                    bonus: { eva: 10, ci: 20, cx: 10 }
+                },
+                notes: '官方產品總覽列旅人無限卡海外 NT$10 = 1 點、國內 NT$18 = 1 點；中華航空哩程依滙豐公告以 2 旅遊積分 = 1 哩估算。年費、資格與兌換比例請以官方公告為準。'
+            },
+            ctbc_ci_ding: {
+                name: '中信華航鼎尊無限卡',
+                issuer: '中國信託',
+                earnType: '華夏哩程',
+                sourceUrl: 'https://www.ctbcbank.com/content/dam/minisite/long/creditcard/CTBCCI/index.html',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: null, ci: 18, cx: null },
+                    overseas: { eva: null, ci: 18, cx: null },
+                    bonus: { eva: null, ci: 9, cx: null }
+                },
+                notes: '官方列基本哩 NT$18 = 1 哩；指定產業加碼 2 倍、生日月加碼 3 倍，且有每月加碼回饋上限。此卡主要累積華夏哩程，本頁不換算長榮或亞洲萬里通。'
+            },
+            ctbc_ci_bright: {
+                name: '中信華航璀璨無限卡',
+                issuer: '中國信託',
+                earnType: '華夏哩程',
+                sourceUrl: 'https://www.ctbcbank.com/content/dam/minisite/long/creditcard/CTBCCI/index.html',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: null, ci: 20, cx: null },
+                    overseas: { eva: null, ci: 20, cx: null },
+                    bonus: { eva: null, ci: 10, cx: null }
+                },
+                notes: '官方列基本哩 NT$20 = 1 哩；指定產業加碼 2 倍、生日月加碼 3 倍，且有每月加碼回饋上限。此卡主要累積華夏哩程，本頁不換算長榮或亞洲萬里通。'
+            },
+            ctbc_ci_business: {
+                name: '中信華航商務御璽卡',
+                issuer: '中國信託',
+                earnType: '華夏哩程',
+                sourceUrl: 'https://www.ctbcbank.com/content/dam/minisite/long/creditcard/CTBCCI/index.html',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: null, ci: 30, cx: null },
+                    overseas: { eva: null, ci: 30, cx: null },
+                    bonus: { eva: null, ci: 15, cx: null }
+                },
+                notes: '官方列基本哩 NT$30 = 1 哩；指定產業加碼 2 倍，且有每月加碼回饋上限。此卡主要累積華夏哩程，本頁不換算長榮或亞洲萬里通。'
+            },
+            cathay_eva_bonus: {
+                name: '國泰世華長榮航空聯名卡 - 指定加碼',
+                issuer: '國泰世華銀行',
+                earnType: '長榮哩程',
+                sourceUrl: 'https://www.cathaybk.com.tw/cathaybk/personal/credit-card/cards/intro/eva/login/',
+                lastChecked: '2026-05-20',
+                rates: {
+                    domestic: { eva: null, ci: null, cx: null },
+                    overseas: { eva: 15, ci: null, cx: null },
+                    bonus: { eva: 10, ci: null, cx: null }
+                },
+                notes: '官方活動列指定條件最優 NT$10 = 1 哩、海外一般交易 NT$15 = 1 哩；最優回饋有卡等年上限，且部分條件需登錄或符合長榮/海外指定消費定義。國內一般消費未在本頁估算。'
+            },
+            cube_info: {
+                name: '國泰世華 CUBE卡 - 小樹點資訊',
+                issuer: '國泰世華銀行',
+                earnType: '小樹點(信用卡)',
+                sourceUrl: 'https://www.cathaybk.com.tw/cathaybk/-/media/fddd4d9d98754438a663ee9129eb345a.pdf?sc_lang=en',
+                lastChecked: '2026-05-20',
+                nonMileage: true,
+                pointRates: { domestic: 3, overseas: 3, bonus: 30 },
+                rates: {
+                    domestic: { eva: null, ci: null, cx: null },
+                    overseas: { eva: null, ci: null, cx: null },
+                    bonus: { eva: null, ci: null, cx: null }
+                },
+                notes: '官方權益手冊列 2026/6/30 前一般消費 0.3% 小樹點回饋，指定權益方案通路通常為 3% 小樹點；小樹點可折抵或參加航空哩程/飯店積分兌換，但兌換比例與通路條件需另以 CUBE App/官網為準，因此本頁不直接換算航空哩程。'
+            }
         }
     },
     
@@ -499,38 +601,75 @@ window.app = {
         app.calcState.card = card;
         app.updateCalculator();
     },
+
+    setSpendType: (spendType) => {
+        app.calcState.spendType = spendType;
+        app.updateCalculator();
+    },
     
     updateCalculator: () => {
         const slider = document.getElementById('calc-spend-slider');
-        const amount = parseInt(slider.value);
+        const amount = parseInt(slider.value, 10);
         app.calcState.amount = amount;
         
         // Display formatted amount
         document.getElementById('calc-spend-display').innerText = amount.toLocaleString();
         
-        const card = app.calcState.card;
-        const rates = app.calcState.rates[card];
+        const cardKey = app.calcState.card;
+        const card = app.calcState.cards[cardKey];
+        const spendType = app.calcState.spendType;
+        const rates = card.rates[spendType];
         const targets = app.calcState.targets;
+        const scenarioLabel = {
+            domestic: '國內一般消費',
+            overseas: '海外一般消費',
+            bonus: '指定加碼/活動條件'
+        }[spendType];
         
-        // Calculate efficiency based on best rate for the card
-        const bestRate = Math.min(rates.eva, rates.ci, rates.cx);
-        const eff = Math.floor(1000 / bestRate);
-        document.getElementById('calc-efficiency').innerText = eff;
+        document.getElementById('card-info-title').innerText = `${card.name}｜${scenarioLabel}`;
+        document.getElementById('card-info-notes').innerText = card.notes;
+        document.getElementById('card-info-updated').innerText = card.lastChecked;
+        const sourceLink = document.getElementById('card-info-source');
+        sourceLink.href = card.sourceUrl;
+        sourceLink.innerText = `${card.issuer} 官方來源`;
+        
+        const validRates = Object.values(rates).filter(rate => Number.isFinite(rate));
+        const bestRate = validRates.length ? Math.min(...validRates) : null;
+        if (card.nonMileage) {
+            const points = card.pointRates[spendType] ?? 0;
+            document.getElementById('calc-efficiency').innerText = points;
+            document.getElementById('calc-efficiency-unit').innerText = '小樹點 / 千元';
+        } else if (bestRate) {
+            document.getElementById('calc-efficiency').innerText = Math.floor(1000 / bestRate);
+            document.getElementById('calc-efficiency-unit').innerText = `${card.earnType} / 千元`;
+        } else {
+            document.getElementById('calc-efficiency').innerText = 'N/A';
+            document.getElementById('calc-efficiency-unit').innerText = '此情境不估算哩程';
+        }
         
         // Update airlines
         const updateAirline = (key, name) => {
-            const miles = Math.floor(amount / rates[key]);
+            const rate = rates[key];
+            const statusEl = document.getElementById(`${key}-status`);
+            const ctaBtn = document.getElementById(`${key}-cta`);
+            if (!Number.isFinite(rate)) {
+                document.getElementById(`${key}-miles`).innerText = 'N/A';
+                document.getElementById(`${key}-progress`).style.width = '0%';
+                statusEl.innerHTML = `${card.name} 在「${scenarioLabel}」不適用 ${name} 哩程固定估算`;
+                statusEl.style.color = 'var(--text-muted)';
+                ctaBtn.classList.add('hidden');
+                return;
+            }
+            
+            const miles = Math.floor(amount / rate);
             const target = targets[key];
             const missingMiles = Math.max(0, target - miles);
-            const reqSpend = missingMiles * rates[key];
+            const reqSpend = missingMiles * rate;
             
             document.getElementById(`${key}-miles`).innerText = miles.toLocaleString();
             
             const pct = Math.min(100, Math.floor((miles / target) * 100));
             document.getElementById(`${key}-progress`).style.width = pct + '%';
-            
-            const statusEl = document.getElementById(`${key}-status`);
-            const ctaBtn = document.getElementById(`${key}-cta`);
             
             if (missingMiles > 0) {
                 statusEl.innerHTML = `距離解鎖機票，您還需消費：NT$ ${reqSpend.toLocaleString()}`;
@@ -549,24 +688,24 @@ window.app = {
         
         // AI Diagnosis
         const aiEl = document.getElementById('ai-diagnosis');
-        if (card === 'cube') {
-            const missingMilesEVA = Math.max(0, targets.eva - Math.floor(amount / rates.eva));
-            const reqSpendCUBE = missingMilesEVA * rates.eva;
-            const reqSpendGeneral = missingMilesEVA * 20; // 假設一般消費 20元=1哩
-            const savings = reqSpendGeneral - reqSpendCUBE;
-            if (missingMilesEVA > 0) {
-                aiEl.innerHTML = `選擇 CUBE 卡 (指定回饋最高)！您僅需刷 <span class="font-bold text-primary">NT$ ${reqSpendCUBE.toLocaleString()}</span> 即可換機票，相較一般模式省下 <span class="font-bold text-danger">NT$ ${savings.toLocaleString()}</span> 的門檻！`;
+        if (card.nonMileage) {
+            aiEl.innerHTML = `${card.name} 適合做小樹點回饋與折抵估算，但不應直接拿來推算固定航空哩程。若要比較機票缺口，請改選可直接累積或轉換哩程的卡片。`;
+        } else if (!bestRate) {
+            aiEl.innerHTML = `${card.name} 在「${scenarioLabel}」沒有可用的固定哩程估算資料。請改選其他消費情境，或回到銀行官方頁確認最新活動條件。`;
+        } else {
+            const candidates = [
+                { key: 'eva', label: '長榮', rate: rates.eva, target: targets.eva },
+                { key: 'ci', label: '華航', rate: rates.ci, target: targets.ci },
+                { key: 'cx', label: '亞洲萬里通', rate: rates.cx, target: targets.cx }
+            ].filter(item => Number.isFinite(item.rate));
+            const best = candidates.sort((a, b) => a.rate - b.rate)[0];
+            const miles = Math.floor(amount / best.rate);
+            const missing = Math.max(0, best.target - miles);
+            if (missing > 0) {
+                aiEl.innerHTML = `${card.name} 在「${scenarioLabel}」下，目前較適合累積 <span class="font-bold text-primary">${best.label}</span>。若要達標，還差約 <span class="font-bold text-danger">${missing.toLocaleString()}</span> 哩；此估算未納入登錄、上限、不回饋項目與活動期間限制。`;
             } else {
-                aiEl.innerHTML = `使用 CUBE 卡高回饋活動，您已成功達標機票門檻！`;
+                aiEl.innerHTML = `${card.name} 在「${scenarioLabel}」下，依目前公開回饋率估算已達 ${best.label} 目標。不過實際入帳仍需符合銀行官方條件。`;
             }
-        } else if (card === 'eva') {
-            aiEl.innerHTML = `長榮極致無限卡最適合累積長榮哩程 (10元=1哩)！建議將目標鎖定在長榮航空，即可快速達成機票門檻。`;
-        } else if (card === 'dbs') {
-            aiEl.innerHTML = `星展飛行世界商務卡是非常好的通用卡，各家航空皆為 15元=1哩，適合想要自由選擇航空公司的您。`;
-        } else if (card === 'hsbc') {
-            aiEl.innerHTML = `滙豐旅人輕旅卡通用性極高，但目前 20元=1哩 累積速度較為中規中矩。如果您有特定喜歡的航空，可以搭配聯名卡使用。`;
-        } else if (card === 'ci') {
-            aiEl.innerHTML = `華航聯名卡最適合累積華航哩程 (18元=1哩)！建議將目標鎖定在中華航空。`;
         }
     },
 

@@ -212,15 +212,29 @@
                 <div class="card mb-4">
                     <h3 class="font-bold mb-2">選擇您的信用卡</h3>
                     <select id="calc-card" class="form-input mb-3" onchange="app.setCalcCard(this.value)">
-                        <option value="cube">國泰世華 CUBE卡 (指定優惠)</option>
-                        <option value="hsbc">滙豐旅人輕旅卡 (一般消費)</option>
-                        <option value="dbs">星展飛行世界商務卡 (一般消費)</option>
-                        <option value="eva">國泰世華長榮航空極致無限卡</option>
-                        <option value="ci">中國信託中華航空聯名卡</option>
+                        <option value="dbs_world">星展飛行世界商務卡</option>
+                        <option value="hsbc_light">滙豐旅人輕旅卡</option>
+                        <option value="hsbc_infinite">滙豐旅人無限卡</option>
+                        <option value="ctbc_ci_ding">中信華航鼎尊無限卡</option>
+                        <option value="ctbc_ci_bright">中信華航璀璨無限卡</option>
+                        <option value="ctbc_ci_business">中信華航商務御璽卡</option>
+                        <option value="cathay_eva_bonus">國泰世華長榮航空聯名卡 - 指定加碼</option>
+                        <option value="cube_info">國泰世華 CUBE卡 - 小樹點資訊</option>
+                    </select>
+                    <h3 class="font-bold mb-2">消費情境</h3>
+                    <select id="calc-spend-type" class="form-input mb-3" onchange="app.setSpendType(this.value)">
+                        <option value="domestic">國內一般消費</option>
+                        <option value="overseas">海外一般消費</option>
+                        <option value="bonus">指定加碼/活動條件</option>
                     </select>
                     <div class="efficiency-box bg-primary-bg p-3 rounded-lg text-center">
                         <div class="text-sm text-primary-dark font-bold">目前千元累積效率</div>
-                        <div class="text-2xl font-bold text-primary"><span id="calc-efficiency">333</span> <span class="text-sm text-gray font-normal">哩 / 千元</span></div>
+                        <div class="text-2xl font-bold text-primary"><span id="calc-efficiency">50</span> <span class="text-sm text-gray font-normal" id="calc-efficiency-unit">哩 / 千元</span></div>
+                    </div>
+                    <div class="mt-3 p-3 bg-gray-50 border border-gray-200 rounded text-sm">
+                        <div class="font-bold mb-1" id="card-info-title">官方資料提醒</div>
+                        <div class="text-gray leading-relaxed" id="card-info-notes">載入中...</div>
+                        <div class="text-xs text-gray mt-2">最後查核：<span id="card-info-updated">2026-05-20</span> ｜ <a id="card-info-source" href="#" target="_blank" rel="noopener">銀行官方來源</a></div>
                     </div>
                 </div>
 
@@ -281,6 +295,10 @@
                     <p class="text-sm text-gray leading-relaxed" id="ai-diagnosis">
                         載入中...
                     </p>
+                </div>
+                <div class="card mt-4 bg-red-50 border border-red-200">
+                    <div class="font-bold text-danger mb-1">試算限制</div>
+                    <p class="text-sm text-gray leading-relaxed">信用卡回饋會受卡等、消費地、MCC、指定通路、登錄、月/年上限、不回饋項目與銀行活動期間影響。本頁只用銀行官網可查的公開資訊做估算，實際回饋仍以銀行入帳與最新公告為準。</p>
                 </div>
                 <div style="height:20px;"></div>
             </div>
