@@ -606,6 +606,24 @@ window.app = {
         app.calcState.spendType = spendType;
         app.updateCalculator();
     },
+
+    updateCubePointsSummary: (card, spendType, amount) => {
+        const input = document.getElementById('cube-current-points');
+        const summary = document.getElementById('cube-points-summary');
+        if (!input || !summary) return;
+
+        const currentPoints = Math.max(0, Math.floor(Number(input.value) || 0));
+        const earnPerThousand = card.pointRates[spendType] ?? 0;
+        const projectedPoints = Math.floor((amount / 1000) * earnPerThousand);
+        const totalPoints = currentPoints + projectedPoints;
+
+        if (!input.value) {
+            summary.innerHTML = `本次預計消費可累積約 <span class="font-bold text-primary">${projectedPoints.toLocaleString()}</span> 小樹點。請輸入目前持有點數後，系統會估算合計可用點數。`;
+            return;
+        }
+
+        summary.innerHTML = `目前持有 <span class="font-bold">${currentPoints.toLocaleString()}</span> 點；本次預計消費可再累積約 <span class="font-bold text-primary">${projectedPoints.toLocaleString()}</span> 點，合計約 <span class="font-bold text-primary">${totalPoints.toLocaleString()}</span> 小樹點。<br><span class="text-xs text-gray">小樹點折抵與兌換比例依 CUBE App、指定權益方案與通路規則為準，這裡先以點數總量做決策估算。</span>`;
+    },
     
     updateCalculator: () => {
         const slider = document.getElementById('calc-spend-slider');
@@ -632,6 +650,14 @@ window.app = {
         const sourceLink = document.getElementById('card-info-source');
         sourceLink.href = card.sourceUrl;
         sourceLink.innerText = `${card.issuer} 官方來源`;
+
+        const cubePanel = document.getElementById('cube-points-panel');
+        if (cubePanel) {
+            cubePanel.classList.toggle('hidden', !card.nonMileage);
+            if (card.nonMileage) {
+                app.updateCubePointsSummary(card, spendType, amount);
+            }
+        }
         
         const validRates = Object.values(rates).filter(rate => Number.isFinite(rate));
         const bestRate = validRates.length ? Math.min(...validRates) : null;

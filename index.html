@@ -162,12 +162,16 @@
         <!-- View: Calculator (SmartMile) -->
         <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程/點數最佳化</div>
+                <div class="header-title">哩程/點數最佳化 <span class="version-badge">V2</span></div>
             </header>
             <div class="view-content p-4">
                 <div class="card mb-4 bg-primary-bg border border-primary">
                     <h3 class="font-bold mb-2 text-primary-dark">先算缺口，再決定是否媒合</h3>
                     <p class="text-sm text-gray leading-relaxed">選擇目標航線與信用卡，估算還差多少哩程。若刷卡累積太慢，可從缺口直接前往媒合頁尋找可轉讓點數。</p>
+                    <div class="version-note mt-3">
+                        <span class="font-bold">V2</span>
+                        <span>更新日誌：新增官方信用卡資料、小樹點持有點數輸入與合計估算。</span>
+                    </div>
                 </div>
                 <!-- Flight Route Selection -->
                 <div class="card mb-4">
@@ -227,6 +231,12 @@
                         <option value="overseas">海外一般消費</option>
                         <option value="bonus">指定加碼/活動條件</option>
                     </select>
+                    <div id="cube-points-panel" class="cube-points-panel hidden">
+                        <label for="cube-current-points" class="font-bold text-sm">目前持有小樹點</label>
+                        <input type="number" id="cube-current-points" class="form-input mt-2" min="0" step="1" placeholder="例如：12000" oninput="app.updateCalculator()" />
+                        <div class="text-xs text-gray mt-2">輸入目前點數後，會合併本次預計消費可累積的小樹點一起估算。</div>
+                        <div id="cube-points-summary" class="cube-points-summary mt-3">請先輸入目前持有點數。</div>
+                    </div>
                     <div class="efficiency-box bg-primary-bg p-3 rounded-lg text-center">
                         <div class="text-sm text-primary-dark font-bold">目前千元累積效率</div>
                         <div class="text-2xl font-bold text-primary"><span id="calc-efficiency">50</span> <span class="text-sm text-gray font-normal" id="calc-efficiency-unit">哩 / 千元</span></div>

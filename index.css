@@ -166,6 +166,21 @@ body {
     gap: 0.5rem;
 }
 
+.version-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 22px;
+    padding: 0 0.5rem;
+    border-radius: 9999px;
+    background: var(--primary-bg);
+    color: var(--primary-dark);
+    border: 1px solid var(--primary);
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
 .icon-button {
     background: none;
     border: none;
@@ -662,6 +677,37 @@ body {
     background: var(--primary);
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.version-note {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    padding: 0.75rem;
+    border: 1px solid rgba(141, 182, 0, 0.35);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--primary-dark);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.cube-points-panel {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(141, 182, 0, 0.45);
+    border-radius: 0.5rem;
+    background: var(--primary-bg);
+}
+
+.cube-points-summary {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    font-size: 0.875rem;
+    line-height: 1.55;
 }
 
 .progress-bg {
