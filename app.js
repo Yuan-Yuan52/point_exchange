@@ -1,11 +1,11 @@
 // Mock Data
 const mockFeed = [
-    { id: 1, user: '王小明', avatar: '王', type: 'Open Points', pointAmount: 500, cashOffer: 450, note: '想換現金吃晚餐，可立刻匯款！', rating: 4.8, postType: 'buy' },
-    { id: 2, user: '李美美', avatar: '李', type: '全聯福利點', pointAmount: 1200, cashOffer: 1000, note: '換現，誠意收', rating: 5.0, postType: 'buy' },
-    { id: 3, user: '張大頭', avatar: '張', type: 'Line Points', pointAmount: 300, cashOffer: 280, note: '缺現金繳費，拜託了', rating: 4.5, postType: 'buy' },
-    { id: 4, user: '陳小美', avatar: '陳', type: 'Open Points', pointAmount: 2000, cashOffer: 1700, note: '點數太多用不完，便宜賣現！', rating: 4.9, postType: 'sell' },
-    { id: 5, user: '林阿土', avatar: '林', type: '全聯福利點', pointAmount: 800, cashOffer: 700, note: '全聯點數出售，意者私', rating: 4.7, postType: 'sell' },
-    { id: 6, user: '善心人士', avatar: '善', type: '長榮哩程', pointAmount: 1000, cashOffer: 0, note: '哩程快過期了，免費贈送給有緣人', rating: 5.0, postType: 'gift' },
+    { id: 1, user: '王小明', avatar: '王', type: 'Open Points', pointAmount: 500, cashOffer: 450, note: '還差 500 點兌換折抵，希望找可轉讓點數。', rating: 4.8, postType: 'buy' },
+    { id: 2, user: '李美美', avatar: '李', type: '全聯福利點', pointAmount: 1200, cashOffer: 1000, note: '想補足購物折抵缺口，可先聊轉讓方式。', rating: 5.0, postType: 'buy' },
+    { id: 3, user: '張大頭', avatar: '張', type: 'Line Points', pointAmount: 300, cashOffer: 280, note: '試算後還差 300 點，想找小額補點。', rating: 4.5, postType: 'buy' },
+    { id: 4, user: '陳小美', avatar: '陳', type: 'Open Points', pointAmount: 2000, cashOffer: 1700, note: '近期用不到，可討論轉讓方式與效期。', rating: 4.9, postType: 'sell' },
+    { id: 5, user: '林阿土', avatar: '林', type: '全聯福利點', pointAmount: 800, cashOffer: 700, note: '有多餘點數，可協助需要補點的人。', rating: 4.7, postType: 'sell' },
+    { id: 6, user: '善心人士', avatar: '善', type: '長榮哩程', pointAmount: 1000, cashOffer: 0, note: '哩程快到期，想轉讓給剛好有缺口的人。', rating: 5.0, postType: 'gift' },
 ];
 
 const mockChats = [
@@ -16,7 +16,7 @@ const mockChats = [
 const mockReviews = [
     { id: 1, user: '陳先生', rating: 5, text: '交易快速，回覆很親切！', date: '2026-05-18' },
     { id: 2, user: '林小姐', rating: 4, text: '很順利的換到點數了。', date: '2026-05-15' },
-    { id: 3, user: '吳同學', rating: 5, text: '優質好買家！', date: '2026-05-10' },
+    { id: 3, user: '吳同學', rating: 5, text: '溝通清楚、回覆快速。', date: '2026-05-10' },
 ];
 
 function escapeHTML(value) {
@@ -32,9 +32,9 @@ function escapeHTML(value) {
 const state = {
     currentChatUserId: null,
     currentChatUserName: '',
-    activeTab: 'buy', // 'buy' or 'sell'
+    activeTab: 'buy',
     activeCategory: '全部',
-    formPostType: 'buy' // 'buy' or 'sell'
+    formPostType: 'buy'
 };
 
 // Initialization
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderChatList();
     renderReviews();
     app.updateRouteTarget();
+    app.setPostType('buy');
 });
 
 // Navigation Logic
@@ -78,7 +79,7 @@ function renderFeed() {
     });
 
     if (filtered.length === 0) {
-        list.innerHTML = `<div class="text-center text-gray p-8 text-sm">目前沒有相關的${state.activeTab === 'buy' ? '徵求需求' : state.activeTab === 'sell' ? '出售刊登' : '免費贈與'}</div>`;
+        list.innerHTML = `<div class="text-center text-gray p-8 text-sm">目前沒有相關的${state.activeTab === 'buy' ? '補點需求' : state.activeTab === 'sell' ? '可轉讓點數' : '免費轉讓'}</div>`;
         return;
     }
     
@@ -90,10 +91,10 @@ function renderFeed() {
         const isBuy = item.postType === 'buy';
         const isGift = item.postType === 'gift';
         const badgeClass = isGift ? 'gift' : (isBuy ? 'buy' : 'sell');
-        const badgeText = isGift ? '免費贈與' : (isBuy ? '徵求點數' : '出售點數');
-        const labelAmount = isGift ? '贈送數量' : (isBuy ? '需求點數' : '可賣點數');
-        const labelPrice = isBuy ? '願意支付' : '期望售價';
-        const btnText = isGift ? '向他索取 (聯繫)' : (isBuy ? '與他聯繫 (交易)' : '向他購買 (交易)');
+        const badgeText = isGift ? '免費轉讓' : (isBuy ? '想補點數' : '可轉讓點數');
+        const labelAmount = isGift ? '可轉讓數量' : (isBuy ? '缺口數量' : '可轉讓數量');
+        const labelPrice = isBuy ? '可接受成本' : '參考成本';
+        const btnText = isGift ? '詢問轉讓細節' : (isBuy ? '我可能可協助' : '詢問補點方式');
         const safeItem = {
             user: escapeHTML(item.user),
             avatar: escapeHTML(item.avatar),
@@ -126,7 +127,7 @@ function renderFeed() {
                 </div>
                 <i class="ph ph-arrow-right text-muted"></i>
                 <div class="detail-box">
-                    <span class="detail-label">${isGift ? '費用' : labelPrice + ' (現金)'}</span>
+                    <span class="detail-label">${isGift ? '費用' : labelPrice + ' (NT$)'}</span>
                     <span class="detail-value highlight">${isGift ? '免費' : '$' + safeItem.cashOffer}</span>
                 </div>
             </div>
@@ -233,18 +234,18 @@ window.app = {
 
         // Update Labels based on type
         if (type === 'buy') {
-            document.getElementById('form-main-title').innerText = '發布您的點數需求';
-            document.getElementById('label-amount').innerText = '徵求數量';
-            document.getElementById('label-price').innerText = '願意提供的兌換金額 (NT$)';
-            document.getElementById('hint-price').innerText = '這代表您願意用現金向有過多點數的人收購';
+            document.getElementById('form-main-title').innerText = '發布您的補點缺口';
+            document.getElementById('label-amount').innerText = '缺口數量';
+            document.getElementById('label-price').innerText = '可接受補點成本 (NT$)';
+            document.getElementById('hint-price').innerText = '這只是媒合參考成本，實際轉讓方式需由雙方自行確認';
         } else if (type === 'sell') {
-            document.getElementById('form-main-title').innerText = '出售您的多餘點數';
-            document.getElementById('label-amount').innerText = '出售數量';
-            document.getElementById('label-price').innerText = '期望獲得的現金金額 (NT$)';
-            document.getElementById('hint-price').innerText = '這代表您願意以此價格出售您的點數給需要的人';
+            document.getElementById('form-main-title').innerText = '發布可轉讓的點數';
+            document.getElementById('label-amount').innerText = '可轉讓數量';
+            document.getElementById('label-price').innerText = '參考補點成本 (NT$)';
+            document.getElementById('hint-price').innerText = '請在媒合前確認點數效期、轉讓限制與平台規範';
         } else {
-            document.getElementById('form-main-title').innerText = '免費贈送您的點數';
-            document.getElementById('label-amount').innerText = '贈送數量';
+            document.getElementById('form-main-title').innerText = '免費轉讓您的點數';
+            document.getElementById('label-amount').innerText = '可轉讓數量';
         }
         app.updateRecommendedPrice();
     },
@@ -279,7 +280,7 @@ window.app = {
 
         mockFeed.unshift(newPost);
         
-        alert(state.formPostType === 'buy' ? '點數徵求需求發布成功！' : (state.formPostType === 'sell' ? '點數出售刊登成功！' : '免費贈送發布成功！'));
+        alert(state.formPostType === 'buy' ? '補點缺口發布成功！' : (state.formPostType === 'sell' ? '可轉讓點數發布成功！' : '免費轉讓資訊發布成功！'));
         
         // Clear Inputs
         document.getElementById('post-amount').value = '';
@@ -354,7 +355,7 @@ window.app = {
         const type = document.getElementById('match-type').value;
         
         if (!amt || !budget) {
-            alert('請輸入數量與預期花費金額');
+            alert('請輸入缺口數量與可接受補點成本');
             return;
         }
         
@@ -381,24 +382,14 @@ window.app = {
     },
 
     closeAutoMatchAndSend: () => {
-        alert('已成功向 3 位賣家發送交易邀請！');
+        alert('已向 3 位可能符合條件的使用者發送媒合詢問。請先確認點數規則與轉讓限制。');
         app.closeAutoMatch();
         // Go to chat list
         document.querySelector('.nav-item[data-target="view-chat"]').click();
     },
 
-    startEscrow: () => {
-        const feedItem = mockFeed.find(f => f.id === state.currentChatUserId);
-        const amt = feedItem ? feedItem.cashOffer : 500;
-        const fee = Math.floor(amt * 0.03);
-        const total = amt + fee;
-        
-        const confirmMsg = `確認啟動「模擬擔保交易」？\n\nPrototype 將示範代管 NT$ ${total} (含3%手續費 $${fee}) 的流程。\n實際上線前需串接合法金流與交易規範，這裡不代表真實扣款或撥款。`;
-        
-        if (confirm(confirmMsg)) {
-            alert('已啟動模擬擔保流程。此 prototype 不會進行真實扣款或撥款。');
-            app.finishTransaction();
-        }
+    showSafetyTips: () => {
+        alert('媒合安全提醒：\n\n1. 先確認點數或哩程是否可轉讓、是否可合併、效期是否足夠。\n2. 平台只提供媒合與資訊提醒，不介入付款、不代管資金。\n3. 請避免一次交換過大金額，並保留雙方溝通紀錄。\n4. 若對方要求離開平台或提供敏感資料，請提高警覺。');
     },
     
     openChatRoom: (feedId, userName) => {
@@ -412,11 +403,11 @@ window.app = {
         
         // Mock loading messages based on context
         const msgs = document.getElementById('chat-messages');
-        const defaultMsg = feedItem && feedItem.postType === 'sell' 
-            ? `您好，我看到您有 ${feedItem.pointAmount} 點的 ${feedItem.type} 想要以 $${feedItem.cashOffer} 出售，我想跟您購買！`
+        const defaultMsg = feedItem && feedItem.postType === 'sell'
+            ? `您好，我試算後有 ${feedItem.type} 的缺口，看到您有 ${feedItem.pointAmount} 點可討論轉讓，想先了解效期與使用限制。`
             : feedItem && feedItem.postType === 'gift' 
-            ? `您好，我看到您有 ${feedItem.pointAmount} 點的 ${feedItem.type} 想要免費贈送，請問還可以向您索取嗎？非常感謝您！`
-            : `您好，我有 ${userName === '王小明' ? 'Open Points' : '點數'} 可以提供換現金，請問您還需要嗎？`;
+            ? `您好，我試算後剛好有 ${feedItem.type} 缺口，看到您有 ${feedItem.pointAmount} 點可免費轉讓，想先確認是否仍可使用。`
+            : `您好，我看到您正在尋找補點，想先了解您的缺口、期限與點數平台規則。`;
 
         msgs.innerHTML = `
             <div class="text-center text-xs text-gray my-2">今日</div>
@@ -581,11 +572,16 @@ window.app = {
 
     jumpToMatchmaking: (airlineName) => {
         app.switchFeedTab('buy');
+        state.activeCategory = airlineName;
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.classList.toggle('active', chip.textContent.trim() === airlineName);
+        });
+        renderFeed();
         document.querySelector('.nav-item[data-target="view-home"]').click();
         
         // Use timeout to ensure view change completes before alert
         setTimeout(() => {
-            alert(`已導航至媒合大廳！您可以在此向其他人收購「${airlineName}」所需的哩程/點數。`);
+            alert(`已切到補點媒合頁，並篩選「${airlineName}」。請先確認轉讓規則與效期。`);
         }, 100);
     }
 };

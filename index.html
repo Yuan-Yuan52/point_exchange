@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Points Exchange App Prototype</title>
+    <title>哩程/點數最佳化與媒合 Prototype</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,28 +20,32 @@
     <div id="app-container">
         
         <!-- View: Home (Matchmaking Feed) -->
-        <div id="view-home" class="view active">
+        <div id="view-home" class="view">
             <header class="app-header">
                 <div class="header-title">
-                    <i class="ph ph-arrows-left-right text-primary"></i>
-                    <span>點數互換</span>
+                    <i class="ph ph-magnifying-glass text-primary"></i>
+                    <span>補點數媒合</span>
                 </div>
                 <button class="icon-button"><i class="ph ph-bell"></i></button>
             </header>
             <div class="view-content">
+                <div class="card mx-4 mt-4 mb-2 bg-primary-bg border border-primary">
+                    <div class="font-bold text-primary-dark mb-1">依缺口尋找點數</div>
+                    <p class="text-sm text-gray leading-relaxed">先用試算工具確認還差多少哩程或點數，再回到這裡尋找可協助補足缺口的使用者。平台只提供媒合與提醒，不介入付款或代管資金。</p>
+                </div>
                 <!-- Segment Control / Tab -->
                 <div class="segment-control">
                     <button class="segment-btn active" id="tab-buy" onclick="app.switchFeedTab('buy')">
                         <i class="ph ph-shopping-cart-simple"></i>
-                        <span>買</span>
+                        <span>我想補點</span>
                     </button>
                     <button class="segment-btn" id="tab-sell" onclick="app.switchFeedTab('sell')">
                         <i class="ph ph-tag"></i>
-                        <span>賣</span>
+                        <span>我有點數</span>
                     </button>
                     <button class="segment-btn" id="tab-gift" onclick="app.switchFeedTab('gift')">
                         <i class="ph ph-gift"></i>
-                        <span>贈</span>
+                        <span>免費轉讓</span>
                     </button>
                 </div>
                 <div class="filter-bar" style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
@@ -55,7 +59,7 @@
                 </div>
                 <div class="p-3 bg-white border-b border-gray-200">
                     <button class="w-full shadow flex items-center justify-center gap-2 font-bold transition-transform active:scale-95" style="padding: 16px; font-size: 20px; border-radius: 12px; background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); box-shadow: 0 6px 20px rgba(255, 154, 158, 0.5); color: #B31254;" onclick="app.openAutoMatch()">
-                        <i class="ph ph-magic-wand" style="font-size: 28px;"></i> ✨ 一鍵智能媒合
+                        <i class="ph ph-magic-wand" style="font-size: 28px;"></i> 依缺口尋找點數
                     </button>
                 </div>
                 <div class="feed-list" id="feed-list">
@@ -71,14 +75,14 @@
             </header>
             <div class="view-content p-4">
                 <div class="card form-card">
-                    <h3 class="form-title" id="form-main-title">發布您的點數需求</h3>
+                    <h3 class="form-title" id="form-main-title">發布您的補點缺口</h3>
                     
                     <div class="form-group">
                         <label>發布類型</label>
                         <div class="post-type-selector">
-                            <button class="type-btn active" id="btn-post-type-buy" onclick="app.setPostType('buy')">徵求 (買)</button>
-                            <button class="type-btn" id="btn-post-type-sell" onclick="app.setPostType('sell')">出售 (賣)</button>
-                            <button class="type-btn" id="btn-post-type-gift" onclick="app.setPostType('gift')">免費 (贈)</button>
+                            <button class="type-btn active" id="btn-post-type-buy" onclick="app.setPostType('buy')">我想補點</button>
+                            <button class="type-btn" id="btn-post-type-sell" onclick="app.setPostType('sell')">我有點數</button>
+                            <button class="type-btn" id="btn-post-type-gift" onclick="app.setPostType('gift')">免費轉讓</button>
                         </div>
                     </div>
 
@@ -93,7 +97,7 @@
                             <option value="Line Points">Line Points</option>
                         </select>
                         <div id="airline-warning" class="mt-2 p-2 bg-red-50 text-danger text-xs rounded hidden border border-red-200">
-                            ⚠️ 航空哩程轉讓限制：受贈哩程通常無法與自有哩程合併，請確保您購買的數量足以直接兌換整張機票。
+                            航空哩程與點數常有轉讓限制，請先確認平台規則、效期與是否可合併使用。本 prototype 只提供媒合，不處理付款或資金代管。
                         </div>
                     </div>
 
@@ -111,12 +115,12 @@
                         <div id="price-recommendation" class="mt-1 text-sm text-primary font-bold hidden">
                             💡 系統建議報價：約 NT$ <span id="rec-price-val">450</span> <span class="text-xs text-gray font-normal">(歷史均價: 1<span id="rec-price-unit">點=0.9</span>元)</span>
                         </div>
-                        <span class="hint" id="hint-price">這代表您願意用現金向有過多點數的人收購</span>
+                        <span class="hint" id="hint-price">這只是媒合參考成本，實際轉讓方式需由雙方自行確認</span>
                     </div>
 
                     <div class="form-group">
                         <label>備註留言</label>
-                        <textarea id="post-note" class="form-input" rows="3" placeholder="例如：急需，可馬上匯款轉帳"></textarea>
+                        <textarea id="post-note" class="form-input" rows="3" placeholder="例如：還差 8,000 哩兌換東京來回機票，希望找到可轉讓的長榮哩程"></textarea>
                     </div>
 
                     <button class="btn-primary w-full mt-4" onclick="app.submitPost()">確認發布</button>
@@ -142,8 +146,8 @@
                 <button class="icon-button" onclick="app.closeChatRoom()"><i class="ph ph-caret-left"></i></button>
                 <div class="header-title" id="chat-room-name">User</div>
                 <div class="flex gap-2">
-                    <button class="icon-button text-primary" onclick="app.startEscrow()" title="擔保交易"><i class="ph ph-shield-check"></i></button>
-                    <button class="icon-button text-gray" onclick="app.finishTransaction()" title="完成評價"><i class="ph ph-handshake"></i></button>
+                    <button class="icon-button text-primary" onclick="app.showSafetyTips()" title="交易安全提醒"><i class="ph ph-shield-warning"></i></button>
+                    <button class="icon-button text-gray" onclick="app.finishTransaction()" title="留下互動評價"><i class="ph ph-star"></i></button>
                 </div>
             </header>
             <div class="view-content chat-room-content" id="chat-messages">
@@ -156,11 +160,15 @@
         </div>
 
         <!-- View: Calculator (SmartMile) -->
-        <div id="view-calculator" class="view">
+        <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程優化試算</div>
+                <div class="header-title">哩程/點數最佳化</div>
             </header>
             <div class="view-content p-4">
+                <div class="card mb-4 bg-primary-bg border border-primary">
+                    <h3 class="font-bold mb-2 text-primary-dark">先算缺口，再決定是否媒合</h3>
+                    <p class="text-sm text-gray leading-relaxed">選擇目標航線與信用卡，估算還差多少哩程。若刷卡累積太慢，可從缺口直接前往媒合頁尋找可轉讓點數。</p>
+                </div>
                 <!-- Flight Route Selection -->
                 <div class="card mb-4">
                     <h3 class="font-bold mb-2">機票兌換目標查詢</h3>
@@ -231,7 +239,7 @@
                         <div class="text-xs mt-1 text-center font-bold" id="eva-status">
                             距離解鎖機票，您還需消費：NT$ 5,000
                         </div>
-                        <button class="btn-cta hidden mt-2 w-full text-xs" id="eva-cta" onclick="app.jumpToMatchmaking('長榮')">哩程還差一點？👉 立即前往媒合大廳收購點數！</button>
+                        <button class="btn-cta hidden mt-2 w-full text-xs" id="eva-cta" onclick="app.jumpToMatchmaking('長榮哩程')">依缺口尋找長榮哩程</button>
                     </div>
                     
                     <!-- China Airlines -->
@@ -246,7 +254,7 @@
                         <div class="text-xs mt-1 text-center font-bold" id="ci-status">
                             距離解鎖機票，您還需消費：NT$ 5,000
                         </div>
-                        <button class="btn-cta hidden mt-2 w-full text-xs" id="ci-cta" onclick="app.jumpToMatchmaking('華航')">哩程還差一點？👉 立即前往媒合大廳收購點數！</button>
+                        <button class="btn-cta hidden mt-2 w-full text-xs" id="ci-cta" onclick="app.jumpToMatchmaking('華航哩程')">依缺口尋找華航哩程</button>
                     </div>
 
                     <!-- Cathay -->
@@ -261,7 +269,7 @@
                         <div class="text-xs mt-1 text-center font-bold text-primary" id="cx-status">
                             🎉 恭喜！您已達標
                         </div>
-                        <button class="btn-cta hidden mt-2 w-full text-xs" id="cx-cta" onclick="app.jumpToMatchmaking('國泰')">哩程還差一點？👉 立即前往媒合大廳收購點數！</button>
+                        <button class="btn-cta hidden mt-2 w-full text-xs" id="cx-cta" onclick="app.jumpToMatchmaking('亞洲萬里通')">依缺口尋找亞洲萬里通</button>
                     </div>
                 </div>
 
@@ -306,8 +314,8 @@
         <!-- Rating Modal -->
         <div id="rating-modal" class="modal-overlay hidden">
             <div class="modal-content">
-                <h3 class="font-bold text-center mb-4">交易完成！給予評價</h3>
-                <p class="text-sm text-gray mb-4 text-center">請為您與 <span id="rating-target-name" class="font-bold">User</span> 的交易體驗打分</p>
+                <h3 class="font-bold text-center mb-4">留下互動評價</h3>
+                <p class="text-sm text-gray mb-4 text-center">請為您與 <span id="rating-target-name" class="font-bold">User</span> 的溝通體驗打分</p>
                 
                 <div class="stars-input mb-4" id="stars-input">
                     <i class="ph ph-star star-btn active" data-val="1"></i>
@@ -329,8 +337,8 @@
         <!-- Auto Match Modal -->
         <div id="auto-match-modal" class="modal-overlay hidden">
             <div class="modal-content">
-                <h3 class="font-bold text-center mb-4 text-primary"><i class="ph ph-magic-wand text-lg"></i> 一鍵智能媒合</h3>
-                <p class="text-sm text-gray mb-4 text-center">讓系統為您自動配對最適合的賣家</p>
+                <h3 class="font-bold text-center mb-4 text-primary"><i class="ph ph-magic-wand text-lg"></i> 依缺口尋找點數</h3>
+                <p class="text-sm text-gray mb-4 text-center">輸入試算後的缺口，尋找可能可協助轉讓點數的使用者</p>
                 
                 <div class="form-group">
                     <label>我想要找</label>
@@ -348,20 +356,20 @@
                     <input type="number" id="match-amount" class="form-input" placeholder="例如：35000" />
                 </div>
                 <div class="form-group">
-                    <label>預期花費金額 (NT$)</label>
+                    <label>可接受補點成本 (NT$)</label>
                     <input type="number" id="match-budget" class="form-input" placeholder="例如：15000" />
                 </div>
                 
                 <div id="match-results" class="hidden mt-4 bg-primary-bg border border-primary p-3 rounded text-sm text-center">
                     <div id="match-success">
-                        <div class="text-primary font-bold mb-1">🎉 為您找到 3 位優質賣家！</div>
-                        <div class="text-gray text-xs mb-3">平均歷史評價 4.8 顆星，價格符合您的期望。</div>
-                        <button class="btn-primary w-full" onclick="app.closeAutoMatchAndSend()">一鍵發送交易邀請</button>
+                        <div class="text-primary font-bold mb-1">找到 3 位可能符合條件的使用者</div>
+                        <div class="text-gray text-xs mb-3">請先確認點數是否可轉讓、效期、使用限制與雙方約定方式。</div>
+                        <button class="btn-primary w-full" onclick="app.closeAutoMatchAndSend()">發送媒合詢問</button>
                     </div>
                     <div id="match-warning" class="hidden">
-                        <div class="text-danger font-bold mb-1">⚠️ 查無符合條件的賣家</div>
-                        <div class="text-gray text-xs mb-1">可能原因：您的預期金額偏低，或目前無人出售該數量。</div>
-                        <div class="text-gray text-xs mb-3">系統建議：提高預算或分開收購。</div>
+                        <div class="text-danger font-bold mb-1">查無符合條件的使用者</div>
+                        <div class="text-gray text-xs mb-1">可能原因：可接受成本偏低，或目前無人提供該數量。</div>
+                        <div class="text-gray text-xs mb-3">系統建議：調整成本區間、降低缺口數量，或回到試算頁改用刷卡累積。</div>
                         <button class="btn-secondary w-full" onclick="document.getElementById('match-results').classList.add('hidden'); document.getElementById('match-actions').style.display = 'flex';">返回修改條件</button>
                     </div>
                 </div>
@@ -375,17 +383,17 @@
 
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <button class="nav-item active" data-target="view-home">
-                <i class="ph ph-house"></i>
-                <span>首頁</span>
+            <button class="nav-item active" data-target="view-calculator">
+                <i class="ph ph-calculator"></i>
+                <span>試算</span>
+            </button>
+            <button class="nav-item" data-target="view-home">
+                <i class="ph ph-magnifying-glass"></i>
+                <span>媒合</span>
             </button>
             <button class="nav-item" data-target="view-post">
                 <i class="ph ph-plus-circle"></i>
                 <span>發布</span>
-            </button>
-            <button class="nav-item" data-target="view-calculator">
-                <i class="ph ph-calculator"></i>
-                <span>試算</span>
             </button>
             <button class="nav-item" data-target="view-chat">
                 <i class="ph ph-chat-circle-dots"></i>
