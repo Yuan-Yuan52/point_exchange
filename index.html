@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Points Exchange App Prototype</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Lightweight modern icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <!-- App Container (Mobile Simulator on Desktop) -->
+    <div id="app-container">
+        
+        <!-- View: Home (Matchmaking Feed) -->
+        <div id="view-home" class="view active">
+            <header class="app-header">
+                <div class="header-title">
+                    <i class="ph ph-arrows-left-right text-primary"></i>
+                    <span>點數互換</span>
+                </div>
+                <button class="icon-button"><i class="ph ph-bell"></i></button>
+            </header>
+            <div class="view-content">
+                <!-- Segment Control / Tab -->
+                <div class="segment-control">
+                    <button class="segment-btn active" id="tab-buy" onclick="app.switchFeedTab('buy')">
+                        <i class="ph ph-shopping-cart-simple"></i>
+                        <span>買</span>
+                    </button>
+                    <button class="segment-btn" id="tab-sell" onclick="app.switchFeedTab('sell')">
+                        <i class="ph ph-tag"></i>
+                        <span>賣</span>
+                    </button>
+                    <button class="segment-btn" id="tab-gift" onclick="app.switchFeedTab('gift')">
+                        <i class="ph ph-gift"></i>
+                        <span>贈</span>
+                    </button>
+                </div>
+                <div class="filter-bar" style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+                    <button class="filter-chip active" onclick="app.filterType(event, '全部')">全部</button>
+                    <button class="filter-chip" onclick="app.filterType(event, '長榮哩程')">長榮哩程</button>
+                    <button class="filter-chip" onclick="app.filterType(event, '華航哩程')">華航哩程</button>
+                    <button class="filter-chip" onclick="app.filterType(event, '亞洲萬里通')">亞洲萬里通</button>
+                    <button class="filter-chip" onclick="app.filterType(event, 'Open Points')">Open Points</button>
+                    <button class="filter-chip" onclick="app.filterType(event, '全聯福利點')">全聯福利點</button>
+                    <button class="filter-chip" onclick="app.filterType(event, 'Line Points')">Line Points</button>
+                </div>
+                <div class="p-3 bg-white border-b border-gray-200">
+                    <button class="w-full shadow flex items-center justify-center gap-2 font-bold transition-transform active:scale-95" style="padding: 16px; font-size: 20px; border-radius: 12px; background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); box-shadow: 0 6px 20px rgba(255, 154, 158, 0.5); color: #B31254;" onclick="app.openAutoMatch()">
+                        <i class="ph ph-magic-wand" style="font-size: 28px;"></i> ✨ 一鍵智能媒合
+                    </button>
+                </div>
+                <div class="feed-list" id="feed-list">
+                    <!-- Feed items injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Post Request -->
+        <div id="view-post" class="view">
+            <header class="app-header">
+                <div class="header-title">發布需求</div>
+            </header>
+            <div class="view-content p-4">
+                <div class="card form-card">
+                    <h3 class="form-title" id="form-main-title">發布您的點數需求</h3>
+                    
+                    <div class="form-group">
+                        <label>發布類型</label>
+                        <div class="post-type-selector">
+                            <button class="type-btn active" id="btn-post-type-buy" onclick="app.setPostType('buy')">徵求 (買)</button>
+                            <button class="type-btn" id="btn-post-type-sell" onclick="app.setPostType('sell')">出售 (賣)</button>
+                            <button class="type-btn" id="btn-post-type-gift" onclick="app.setPostType('gift')">免費 (贈)</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>點數種類</label>
+                        <select id="post-type" class="form-input" onchange="app.updateRecommendedPrice()">
+                            <option value="長榮哩程">長榮航空哩程 (EVA Air)</option>
+                            <option value="華航哩程">中華航空哩程 (China Airlines)</option>
+                            <option value="亞洲萬里通">國泰亞洲萬里通 (Asia Miles)</option>
+                            <option value="Open Points">Open Points</option>
+                            <option value="全聯福利點">全聯福利點</option>
+                            <option value="Line Points">Line Points</option>
+                        </select>
+                        <div id="airline-warning" class="mt-2 p-2 bg-red-50 text-danger text-xs rounded hidden border border-red-200">
+                            ⚠️ 航空哩程轉讓限制：受贈哩程通常無法與自有哩程合併，請確保您購買的數量足以直接兌換整張機票。
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="label-amount">徵求數量</label>
+                        <input type="number" id="post-amount" class="form-input" placeholder="例如：500" oninput="app.updateRecommendedPrice()" />
+                    </div>
+
+                    <div class="form-group" id="form-group-price">
+                        <label id="label-price">願意提供的兌換金額 (NT$)</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">$</span>
+                            <input type="number" id="post-price" class="form-input" placeholder="例如：450" />
+                        </div>
+                        <div id="price-recommendation" class="mt-1 text-sm text-primary font-bold hidden">
+                            💡 系統建議報價：約 NT$ <span id="rec-price-val">450</span> <span class="text-xs text-gray font-normal">(歷史均價: 1<span id="rec-price-unit">點=0.9</span>元)</span>
+                        </div>
+                        <span class="hint" id="hint-price">這代表您願意用現金向有過多點數的人收購</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>備註留言</label>
+                        <textarea id="post-note" class="form-input" rows="3" placeholder="例如：急需，可馬上匯款轉帳"></textarea>
+                    </div>
+
+                    <button class="btn-primary w-full mt-4" onclick="app.submitPost()">確認發布</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Chat List -->
+        <div id="view-chat" class="view">
+            <header class="app-header">
+                <div class="header-title">訊息</div>
+            </header>
+            <div class="view-content">
+                <div class="chat-list" id="chat-list">
+                    <!-- Chat list injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Chat Room (Sub-view) -->
+        <div id="view-chat-room" class="view sub-view z-10">
+            <header class="app-header">
+                <button class="icon-button" onclick="app.closeChatRoom()"><i class="ph ph-caret-left"></i></button>
+                <div class="header-title" id="chat-room-name">User</div>
+                <div class="flex gap-2">
+                    <button class="icon-button text-primary" onclick="app.startEscrow()" title="擔保交易"><i class="ph ph-shield-check"></i></button>
+                    <button class="icon-button text-gray" onclick="app.finishTransaction()" title="完成評價"><i class="ph ph-handshake"></i></button>
+                </div>
+            </header>
+            <div class="view-content chat-room-content" id="chat-messages">
+                <!-- Messages injected via JS -->
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="輸入訊息..." class="form-input" />
+                <button class="icon-button text-primary" onclick="app.sendMessage()"><i class="ph ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+
+        <!-- View: Calculator (SmartMile) -->
+        <div id="view-calculator" class="view">
+            <header class="app-header">
+                <div class="header-title">哩程優化試算</div>
+            </header>
+            <div class="view-content p-4">
+                <!-- Flight Route Selection -->
+                <div class="card mb-4">
+                    <h3 class="font-bold mb-2">機票兌換目標查詢</h3>
+                    <div class="flex gap-2 items-center mb-1">
+                        <select id="route-from" class="form-input flex-1">
+                            <option value="TPE">台北 (TPE)</option>
+                        </select>
+                        <i class="ph ph-arrow-right text-gray"></i>
+                        <select id="route-to" class="form-input flex-1" onchange="app.updateRouteTarget()">
+                            <option value="ASIA">亞洲 (東京/首爾/曼谷)</option>
+                            <option value="HKG">港澳 (香港/澳門)</option>
+                            <option value="US">美洲 (洛杉磯/紐約)</option>
+                            <option value="EUR">歐洲 (倫敦/巴黎)</option>
+                        </select>
+                    </div>
+                    <div id="route-info-box" class="mt-3 p-3 bg-primary-bg rounded text-sm hidden">
+                        <div class="font-bold text-primary-dark mb-1" id="route-info-title">台北 (TPE) ➔ 亞洲 (東京/首爾/曼谷)</div>
+                        <div class="flex justify-between text-xs mt-1">
+                            <span>長榮: <span id="route-info-eva" class="font-bold">35,000</span> 哩</span>
+                            <span>華航: <span id="route-info-ci" class="font-bold">35,000</span> 哩</span>
+                            <span>國泰: <span id="route-info-cx" class="font-bold">20,000</span> 哩</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray text-right mt-2">
+                        * 自動將所需哩程設為下方進度條目標 (經濟艙來回)
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <h3 class="font-bold mb-2">預計消費金額</h3>
+                    <div class="text-center mb-2">
+                        <span class="text-2xl font-bold text-primary">NT$ <span id="calc-spend-display">100,000</span></span>
+                    </div>
+                    <input type="range" id="calc-spend-slider" class="styled-slider w-full" min="100000" max="2000000" step="10000" value="100000" oninput="app.updateCalculator()">
+                    <div class="flex justify-between text-xs text-gray mt-1">
+                        <span>10萬</span>
+                        <span>200萬</span>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <h3 class="font-bold mb-2">選擇您的信用卡</h3>
+                    <select id="calc-card" class="form-input mb-3" onchange="app.setCalcCard(this.value)">
+                        <option value="cube">國泰世華 CUBE卡 (指定優惠)</option>
+                        <option value="hsbc">滙豐旅人輕旅卡 (一般消費)</option>
+                        <option value="dbs">星展飛行世界商務卡 (一般消費)</option>
+                        <option value="eva">國泰世華長榮航空極致無限卡</option>
+                        <option value="ci">中國信託中華航空聯名卡</option>
+                    </select>
+                    <div class="efficiency-box bg-primary-bg p-3 rounded-lg text-center">
+                        <div class="text-sm text-primary-dark font-bold">目前千元累積效率</div>
+                        <div class="text-2xl font-bold text-primary"><span id="calc-efficiency">333</span> <span class="text-sm text-gray font-normal">哩 / 千元</span></div>
+                    </div>
+                </div>
+
+                <div class="card mb-4" id="airlines-container">
+                    <h3 class="font-bold mb-3">航空公司機票解鎖進度</h3>
+                    
+                    <!-- EVA -->
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="font-bold text-sm">長榮航空 (目標: <span id="label-target-eva">35,000</span>哩)</span>
+                            <span class="text-sm font-bold text-primary"><span id="eva-miles">33333</span> 哩</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-bar" id="eva-progress" style="width: 95%;"></div>
+                        </div>
+                        <div class="text-xs mt-1 text-center font-bold" id="eva-status">
+                            距離解鎖機票，您還需消費：NT$ 5,000
+                        </div>
+                        <button class="btn-cta hidden mt-2 w-full text-xs" id="eva-cta" onclick="app.jumpToMatchmaking('長榮')">哩程還差一點？👉 立即前往媒合大廳收購點數！</button>
+                    </div>
+                    
+                    <!-- China Airlines -->
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-1">
+                            <span class="font-bold text-sm">中華航空 (目標: <span id="label-target-ci">35,000</span>哩)</span>
+                            <span class="text-sm font-bold text-primary"><span id="ci-miles">33333</span> 哩</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-bar" id="ci-progress" style="width: 95%;"></div>
+                        </div>
+                        <div class="text-xs mt-1 text-center font-bold" id="ci-status">
+                            距離解鎖機票，您還需消費：NT$ 5,000
+                        </div>
+                        <button class="btn-cta hidden mt-2 w-full text-xs" id="ci-cta" onclick="app.jumpToMatchmaking('華航')">哩程還差一點？👉 立即前往媒合大廳收購點數！</button>
+                    </div>
+
+                    <!-- Cathay -->
+                    <div class="mb-2">
+                        <div class="flex justify-between mb-1">
+                            <span class="font-bold text-sm">國泰航空 (目標: <span id="label-target-cx">30,000</span>哩)</span>
+                            <span class="text-sm font-bold text-primary"><span id="cx-miles">33333</span> 哩</span>
+                        </div>
+                        <div class="progress-bg">
+                            <div class="progress-bar" id="cx-progress" style="width: 100%;"></div>
+                        </div>
+                        <div class="text-xs mt-1 text-center font-bold text-primary" id="cx-status">
+                            🎉 恭喜！您已達標
+                        </div>
+                        <button class="btn-cta hidden mt-2 w-full text-xs" id="cx-cta" onclick="app.jumpToMatchmaking('國泰')">哩程還差一點？👉 立即前往媒合大廳收購點數！</button>
+                    </div>
+                </div>
+
+                <div class="card bg-gray-50 border border-gray-200">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="ph ph-lightbulb text-warning text-xl"></i>
+                        <h3 class="font-bold">AI 診斷攻略</h3>
+                    </div>
+                    <p class="text-sm text-gray leading-relaxed" id="ai-diagnosis">
+                        載入中...
+                    </p>
+                </div>
+                <div style="height:20px;"></div>
+            </div>
+        </div>
+
+        <!-- View: Profile & Rating -->
+        <div id="view-profile" class="view">
+            <header class="app-header">
+                <div class="header-title">個人檔案</div>
+            </header>
+            <div class="view-content">
+                <div class="profile-header">
+                    <div class="avatar large">我</div>
+                    <h2 class="profile-name">我的帳號</h2>
+                    <div class="rating-display">
+                        <i class="ph-fill ph-star text-warning"></i>
+                        <span class="rating-score">4.9</span>
+                        <span class="rating-count">(128 筆評價)</span>
+                    </div>
+                </div>
+                
+                <div class="card mt-4 mx-4">
+                    <h3 class="font-bold mb-3">最近獲得的評價</h3>
+                    <div class="review-list" id="review-list">
+                        <!-- Reviews injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rating Modal -->
+        <div id="rating-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h3 class="font-bold text-center mb-4">交易完成！給予評價</h3>
+                <p class="text-sm text-gray mb-4 text-center">請為您與 <span id="rating-target-name" class="font-bold">User</span> 的交易體驗打分</p>
+                
+                <div class="stars-input mb-4" id="stars-input">
+                    <i class="ph ph-star star-btn active" data-val="1"></i>
+                    <i class="ph ph-star star-btn active" data-val="2"></i>
+                    <i class="ph ph-star star-btn active" data-val="3"></i>
+                    <i class="ph ph-star star-btn active" data-val="4"></i>
+                    <i class="ph ph-star star-btn active" data-val="5"></i>
+                </div>
+                
+                <textarea class="form-input mb-4" placeholder="留下您的評論..." rows="3"></textarea>
+                
+                <div class="flex gap-2">
+                    <button class="btn-secondary w-full" onclick="app.closeRatingModal()">略過</button>
+                    <button class="btn-primary w-full" onclick="app.submitRating()">送出評價</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto Match Modal -->
+        <div id="auto-match-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h3 class="font-bold text-center mb-4 text-primary"><i class="ph ph-magic-wand text-lg"></i> 一鍵智能媒合</h3>
+                <p class="text-sm text-gray mb-4 text-center">讓系統為您自動配對最適合的賣家</p>
+                
+                <div class="form-group">
+                    <label>我想要找</label>
+                    <select id="match-type" class="form-input">
+                        <option value="長榮哩程">長榮航空哩程 (EVA Air)</option>
+                        <option value="華航哩程">中華航空哩程 (China Airlines)</option>
+                        <option value="亞洲萬里通">國泰亞洲萬里通 (Asia Miles)</option>
+                        <option value="Open Points">Open Points</option>
+                        <option value="全聯福利點">全聯福利點</option>
+                        <option value="Line Points">Line Points</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>數量</label>
+                    <input type="number" id="match-amount" class="form-input" placeholder="例如：35000" />
+                </div>
+                <div class="form-group">
+                    <label>預期花費金額 (NT$)</label>
+                    <input type="number" id="match-budget" class="form-input" placeholder="例如：15000" />
+                </div>
+                
+                <div id="match-results" class="hidden mt-4 bg-primary-bg border border-primary p-3 rounded text-sm text-center">
+                    <div id="match-success">
+                        <div class="text-primary font-bold mb-1">🎉 為您找到 3 位優質賣家！</div>
+                        <div class="text-gray text-xs mb-3">平均歷史評價 4.8 顆星，價格符合您的期望。</div>
+                        <button class="btn-primary w-full" onclick="app.closeAutoMatchAndSend()">一鍵發送交易邀請</button>
+                    </div>
+                    <div id="match-warning" class="hidden">
+                        <div class="text-danger font-bold mb-1">⚠️ 查無符合條件的賣家</div>
+                        <div class="text-gray text-xs mb-1">可能原因：您的預期金額偏低，或目前無人出售該數量。</div>
+                        <div class="text-gray text-xs mb-3">系統建議：提高預算或分開收購。</div>
+                        <button class="btn-secondary w-full" onclick="document.getElementById('match-results').classList.add('hidden'); document.getElementById('match-actions').style.display = 'flex';">返回修改條件</button>
+                    </div>
+                </div>
+
+                <div id="match-actions" class="flex gap-2 mt-4">
+                    <button class="btn-secondary w-full" onclick="app.closeAutoMatch()">取消</button>
+                    <button class="btn-primary w-full" onclick="app.runAutoMatch()">開始尋找</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="view-home">
+                <i class="ph ph-house"></i>
+                <span>首頁</span>
+            </button>
+            <button class="nav-item" data-target="view-post">
+                <i class="ph ph-plus-circle"></i>
+                <span>發布</span>
+            </button>
+            <button class="nav-item" data-target="view-calculator">
+                <i class="ph ph-calculator"></i>
+                <span>試算</span>
+            </button>
+            <button class="nav-item" data-target="view-chat">
+                <i class="ph ph-chat-circle-dots"></i>
+                <span>訊息</span>
+            </button>
+            <button class="nav-item" data-target="view-profile">
+                <i class="ph ph-user"></i>
+                <span>我的</span>
+            </button>
+        </nav>
+        
+    </div>
+
+    <!-- Script for Logic -->
+    <script src="./app.js"></script>
+</body>
+</html>
