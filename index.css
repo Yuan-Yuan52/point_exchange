@@ -772,6 +772,64 @@ body {
     word-break: break-word;
 }
 
+.next-action-card {
+    border: 1px solid var(--border);
+}
+
+.next-action-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+}
+
+.next-action {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.65rem;
+    row-gap: 0.1rem;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: var(--text-main);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.next-action.primary {
+    border-color: rgba(141, 182, 0, 0.55);
+    background: var(--primary-bg);
+}
+
+.next-action i {
+    grid-row: 1 / span 2;
+    display: flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #eef2ff;
+    color: var(--primary-dark);
+    font-size: 1.25rem;
+}
+
+.next-action span {
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.next-action small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
 .cube-points-panel {
     margin-bottom: 0.75rem;
     padding: 0.75rem;

@@ -13,7 +13,7 @@
     <!-- Phosphor Icons (Lightweight modern icons) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="./index.css?v=4">
+    <link rel="stylesheet" href="./index.css?v=5">
 </head>
 <body>
     <!-- App Container (Mobile Simulator on Desktop) -->
@@ -162,15 +162,15 @@
         <!-- View: Calculator (SmartMile) -->
         <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程/點數最佳化 <span class="version-badge">V4</span></div>
+                <div class="header-title">哩程/點數最佳化 <span class="version-badge">V5</span></div>
             </header>
             <div class="view-content p-4">
                 <div class="card mb-4 bg-primary-bg border border-primary">
                     <h3 class="font-bold mb-2 text-primary-dark">先算缺口，再決定是否媒合</h3>
                     <p class="text-sm text-gray leading-relaxed">選擇目標航線與信用卡，估算還差多少哩程。若刷卡累積太慢，可從缺口直接前往媒合頁尋找可轉讓點數。</p>
                     <div class="version-note mt-3">
-                        <span class="font-bold">V4</span>
-                        <span>更新日誌：加入已有哩程輸入、金額手動輸入與一眼看懂的最佳建議。</span>
+                        <span class="font-bold">V5</span>
+                        <span>更新日誌：把試算結果接到官方補哩、刷卡累積與媒合三個下一步入口。</span>
                     </div>
                 </div>
                 <div class="flow-steps mb-4">
@@ -277,6 +277,29 @@
                         </div>
                     </div>
                     <button class="btn-primary w-full mt-3" id="best-cta" onclick="app.jumpToMatchmaking('長榮哩程')">依缺口去媒合</button>
+                </div>
+
+                <div class="card mb-4 next-action-card">
+                    <div class="text-xs text-primary-dark font-bold mb-1">下一步入口</div>
+                    <h3 class="font-bold mb-2">缺口出來後，先選補點方式</h3>
+                    <div class="next-action-grid">
+                        <a class="next-action primary" id="official-topup-link" href="https://www.evaair.com/zh-tw/infinity-mileagelands/mileage-award-program/purchase-miles/" target="_blank" rel="noopener">
+                            <i class="ph ph-bank"></i>
+                            <span>官方補哩</span>
+                            <small id="official-topup-note">前往航空公司或銀行官方入口</small>
+                        </a>
+                        <button class="next-action" type="button" id="keep-earning-btn">
+                            <i class="ph ph-credit-card"></i>
+                            <span>繼續刷卡累積</span>
+                            <small id="keep-earning-note">用目前信用卡估算還要刷多少</small>
+                        </button>
+                        <button class="next-action" type="button" id="matchmaking-entry-btn" onclick="app.jumpToMatchmaking('長榮哩程')">
+                            <i class="ph ph-users-three"></i>
+                            <span>媒合找點數</span>
+                            <small id="matchmaking-note">找可協助補足缺口的人</small>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray leading-relaxed mt-3">若未來有合作分潤，建議以「合作連結」明確標示；最佳建議仍應以使用者成本與可行性排序。</p>
                 </div>
 
                 <div class="card mb-4" id="airlines-container">
@@ -467,6 +490,6 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="./app.js?v=4"></script>
+    <script src="./app.js?v=5"></script>
 </body>
 </html>
