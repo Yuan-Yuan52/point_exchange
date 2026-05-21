@@ -651,6 +651,218 @@ body {
 }
 
 /* Calculator Styles */
+.simple-calculator {
+    background: #f6f7f4;
+}
+
+.simple-hero {
+    padding: 0.25rem 0 0.75rem;
+}
+
+.simple-hero h2 {
+    margin: 0;
+    font-size: 1.55rem;
+    line-height: 1.2;
+}
+
+.simple-hero p {
+    margin-top: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.simple-panel,
+.result-panel {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    margin-bottom: 0.9rem;
+}
+
+.compact-field {
+    margin-bottom: 0.75rem;
+}
+
+.compact-field label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.inline-selects,
+.compact-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 0.5rem;
+}
+
+.simple-spend {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-align: right;
+    margin: -0.1rem 0 0.75rem;
+}
+
+.result-panel {
+    border-color: rgba(141, 182, 0, 0.45);
+    background: #fbfdf5;
+}
+
+.result-panel h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.45;
+}
+
+.result-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.result-metrics div {
+    padding: 0.65rem 0.5rem;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    border: 1px solid rgba(141, 182, 0, 0.22);
+}
+
+.result-metrics span,
+.result-metrics strong {
+    display: block;
+}
+
+.result-metrics span {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+.result-metrics strong {
+    margin-top: 0.25rem;
+    color: var(--primary-dark);
+    font-size: 0.98rem;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+.next-actions-simple {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 0.75rem;
+}
+
+.action-button {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.65rem;
+    row-gap: 0.05rem;
+    align-items: center;
+    min-height: 62px;
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    background: #ffffff;
+    color: var(--text-main);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.action-button.primary {
+    border-color: rgba(141, 182, 0, 0.55);
+}
+
+.action-button i {
+    grid-row: 1 / span 2;
+    display: flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--primary-bg);
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+}
+
+.action-button span {
+    font-weight: 700;
+}
+
+.action-button small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.quiet-link {
+    width: 100%;
+    padding: 0.75rem;
+    border: 0;
+    background: transparent;
+    color: var(--primary-dark);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.advanced-details {
+    margin-top: 0.25rem;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+}
+
+.advanced-details summary {
+    cursor: pointer;
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+.simple-info-box,
+.simple-warning,
+.airline-row {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: #f9fafb;
+    font-size: 0.85rem;
+    line-height: 1.55;
+}
+
+.airline-row > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.airline-row > div:first-child span,
+.airline-row p {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.airline-row > strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--primary-dark);
+}
+
+.simple-warning {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: var(--text-muted);
+}
+
 .styled-slider {
     -webkit-appearance: none;
     width: 100%;

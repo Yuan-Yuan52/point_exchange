@@ -784,12 +784,12 @@ window.app = {
             summaryEarned.innerText = `${points.toLocaleString()} 點`;
             summaryTotal.innerText = `${(cubeOwned + points).toLocaleString()} 點`;
             summaryMissing.innerText = '依兌換規則';
-            summaryCta.classList.add('hidden');
+            summaryCta?.classList.add('hidden');
             const cubeLink = app.calcState.topUpLinks.cube;
             officialTopUpLink.href = cubeLink.url;
             officialTopUpLink.querySelector('span').innerText = cubeLink.label;
             officialTopUpNote.innerText = cubeLink.note;
-            keepEarningNote.innerText = '切換 CUBE 權益方案與通路後，再用小樹點合計判斷是否足夠。';
+            if (keepEarningNote) keepEarningNote.innerText = '切換 CUBE 權益方案與通路後，再用小樹點合計判斷是否足夠。';
             matchmakingBtn.classList.add('hidden');
             matchmakingNote.innerText = '小樹點目前先以官方權益與折抵規則為主。';
         } else if (bestResult) {
@@ -799,16 +799,18 @@ window.app = {
             summaryEarned.innerText = `${bestResult.earnedMiles.toLocaleString()} 哩`;
             summaryTotal.innerText = `${bestResult.totalMiles.toLocaleString()} 哩`;
             summaryMissing.innerText = `${bestResult.missingMiles.toLocaleString()} 哩`;
-            summaryCta.classList.toggle('hidden', bestResult.missingMiles === 0);
+            summaryCta?.classList.toggle('hidden', bestResult.missingMiles === 0);
             const categoryMap = { eva: '長榮哩程', ci: '華航哩程', cx: '亞洲萬里通' };
-            summaryCta.onclick = () => app.jumpToMatchmaking(categoryMap[bestResult.key]);
+            if (summaryCta) summaryCta.onclick = () => app.jumpToMatchmaking(categoryMap[bestResult.key]);
             const topUpLink = app.calcState.topUpLinks[bestResult.key];
             officialTopUpLink.href = topUpLink.url;
             officialTopUpLink.querySelector('span').innerText = topUpLink.label;
             officialTopUpNote.innerText = topUpLink.note;
-            keepEarningNote.innerText = bestResult.missingMiles > 0
-                ? `依目前卡片與情境，約需再刷 NT$ ${bestResult.reqSpend.toLocaleString()}。`
-                : '已達標，建議先查票與確認兌換艙位。';
+            if (keepEarningNote) {
+                keepEarningNote.innerText = bestResult.missingMiles > 0
+                    ? `依目前卡片與情境，約需再刷 NT$ ${bestResult.reqSpend.toLocaleString()}。`
+                    : '已達標，建議先查票與確認兌換艙位。';
+            }
             matchmakingBtn.classList.toggle('hidden', bestResult.missingMiles === 0);
             matchmakingBtn.onclick = () => app.jumpToMatchmaking(categoryMap[bestResult.key]);
             matchmakingNote.innerText = bestResult.missingMiles > 0
@@ -819,12 +821,12 @@ window.app = {
             summaryEarned.innerText = 'N/A';
             summaryTotal.innerText = 'N/A';
             summaryMissing.innerText = 'N/A';
-            summaryCta.classList.add('hidden');
+            summaryCta?.classList.add('hidden');
             const fallbackLink = cardKey.startsWith('hsbc') ? app.calcState.topUpLinks.hsbc : app.calcState.topUpLinks.eva;
             officialTopUpLink.href = fallbackLink.url;
             officialTopUpLink.querySelector('span').innerText = fallbackLink.label;
             officialTopUpNote.innerText = fallbackLink.note;
-            keepEarningNote.innerText = '請先換一張可估算的哩程卡或改選消費情境。';
+            if (keepEarningNote) keepEarningNote.innerText = '請先換一張可估算的哩程卡或改選消費情境。';
             matchmakingBtn.classList.add('hidden');
             matchmakingNote.innerText = '目前沒有足夠資料產生媒合缺口。';
         }
