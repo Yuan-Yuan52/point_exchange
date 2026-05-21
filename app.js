@@ -470,47 +470,47 @@ window.app = {
                 name: '星展飛行世界商務卡',
                 issuer: '星展銀行',
                 earnType: '飛行積金',
-                sourceUrl: 'https://www.dbs.com.tw/personal-zh/cards/travelworld/index.html?pid=tw-pweb-personal-zh_cards_offers_epptravel_index_html-L',
-                lastChecked: '2026-05-20',
+                sourceUrl: 'https://www.dbs.com.tw/personal-zh/cards/travelworld/index.html?pid=tw-pweb-personal-zh_cards_dbs-credit-cards_default_page-hyperlink&sc=2c9264916603c1eec363d358204e151c',
+                lastChecked: '2026-05-21',
                 rates: {
-                    domestic: { eva: 20, ci: 20, cx: 20 },
-                    overseas: { eva: 15, ci: 15, cx: 15 },
-                    bonus: { eva: 15, ci: 15, cx: 15 }
+                    domestic: { eva: 22, ci: 22, cx: 22 },
+                    overseas: { eva: 18, ci: 18, cx: 18 },
+                    bonus: { eva: 18, ci: 18, cx: 18 }
                 },
-                notes: '官方列海外一般消費每 NT$15 累積 1 點飛行積金，國內一般消費每 NT$20 累積 1 點；飛行積金可兌換亞洲萬里通、長榮、華夏哩程等。需留意不回饋項目與銀行對一般消費的認定。'
+                notes: '官方 2026 權益列海外一般消費每 NT$18 累積 1 點飛行積金、國內一般消費每 NT$22 累積 1 點，優惠期間至 2026/12/31。飛行積金可兌換亞洲萬里通、長榮、新航、華夏哩程，需留意不回饋項目與銀行對一般消費的認定。'
             },
             hsbc_light: {
                 name: '滙豐旅人輕旅卡',
                 issuer: '滙豐銀行',
                 earnType: '旅遊積分',
-                sourceUrl: 'https://www.hsbc.com.tw/content/hsbc/tw/zh_tw/credit-cards/products/travel/visa-light/',
-                lastChecked: '2026-05-20',
+                sourceUrl: 'https://www.hsbc.com.tw/credit-cards/products/travelone/',
+                lastChecked: '2026-05-21',
                 rates: {
-                    domestic: { eva: 20, ci: 40, cx: 20 },
-                    overseas: { eva: 20, ci: 40, cx: 20 },
-                    bonus: { eva: 20, ci: 40, cx: 20 }
+                    domestic: { eva: 20, ci: 20, cx: 20 },
+                    overseas: { eva: 20, ci: 20, cx: 20 },
+                    bonus: { eva: 20, ci: 20, cx: 20 }
                 },
-                notes: '官方列國內外消費 NT$20 = 1 旅遊積分、回饋無上限；官方頁另載自 2025/1/1 起兌換中華航空哩程比例為 2 旅遊積分 = 1 哩，因此華航欄位以有效 NT$40 = 1 哩估算。其他夥伴仍需以官方兌換頁為準。'
+                notes: '官方列國內外消費 NT$20 = 1 旅遊積分、回饋無上限；官方頁載明自 2026/4/1 起，旅人無限卡、旅人御璽卡與旅人輕旅卡兌換中華航空哩程調整為 1 旅遊積分 = 1 華夏哩程，因此華航欄位已改以 NT$20 = 1 哩估算。'
             },
             hsbc_infinite: {
                 name: '滙豐旅人無限卡',
                 issuer: '滙豐銀行',
                 earnType: '旅遊積分',
-                sourceUrl: 'https://www.hsbc.com.tw/content/dam/hsbc/tw/docs/credit-cards/product-tour.pdf',
-                lastChecked: '2026-05-20',
+                sourceUrl: 'https://www.hsbc.com.tw/credit-cards/products/travel/visa-infinite/',
+                lastChecked: '2026-05-21',
                 rates: {
-                    domestic: { eva: 18, ci: 36, cx: 18 },
-                    overseas: { eva: 10, ci: 20, cx: 10 },
-                    bonus: { eva: 10, ci: 20, cx: 10 }
+                    domestic: { eva: 18, ci: 18, cx: 18 },
+                    overseas: { eva: 10, ci: 10, cx: 10 },
+                    bonus: { eva: 10, ci: 10, cx: 10 }
                 },
-                notes: '官方產品總覽列旅人無限卡海外 NT$10 = 1 點、國內 NT$18 = 1 點；中華航空哩程依滙豐公告以 2 旅遊積分 = 1 哩估算。年費、資格與兌換比例請以官方公告為準。'
+                notes: '官方列旅人無限卡海外消費 NT$10 = 1 旅遊積分、國內 NT$18 = 1 旅遊積分；官方頁載明自 2026/4/1 起兌換中華航空哩程調整為 1 旅遊積分 = 1 華夏哩程，因此華航欄位已不再用 2:1 折算。年費、資格與兌換比例請以官方公告為準。'
             },
             ctbc_ci_ding: {
                 name: '中信華航鼎尊無限卡',
                 issuer: '中國信託',
                 earnType: '華夏哩程',
                 sourceUrl: 'https://www.ctbcbank.com/content/dam/minisite/long/creditcard/CTBCCI/index.html',
-                lastChecked: '2026-05-20',
+                lastChecked: '2026-05-21',
                 rates: {
                     domestic: { eva: null, ci: 18, cx: null },
                     overseas: { eva: null, ci: 18, cx: null },
@@ -523,7 +523,7 @@ window.app = {
                 issuer: '中國信託',
                 earnType: '華夏哩程',
                 sourceUrl: 'https://www.ctbcbank.com/content/dam/minisite/long/creditcard/CTBCCI/index.html',
-                lastChecked: '2026-05-20',
+                lastChecked: '2026-05-21',
                 rates: {
                     domestic: { eva: null, ci: 20, cx: null },
                     overseas: { eva: null, ci: 20, cx: null },
@@ -536,7 +536,7 @@ window.app = {
                 issuer: '中國信託',
                 earnType: '華夏哩程',
                 sourceUrl: 'https://www.ctbcbank.com/content/dam/minisite/long/creditcard/CTBCCI/index.html',
-                lastChecked: '2026-05-20',
+                lastChecked: '2026-05-21',
                 rates: {
                     domestic: { eva: null, ci: 30, cx: null },
                     overseas: { eva: null, ci: 30, cx: null },
@@ -549,20 +549,20 @@ window.app = {
                 issuer: '國泰世華銀行',
                 earnType: '長榮哩程',
                 sourceUrl: 'https://www.cathaybk.com.tw/cathaybk/personal/credit-card/cards/intro/eva/login/',
-                lastChecked: '2026-05-20',
+                lastChecked: '2026-05-21',
                 rates: {
                     domestic: { eva: null, ci: null, cx: null },
                     overseas: { eva: 15, ci: null, cx: null },
                     bonus: { eva: 10, ci: null, cx: null }
                 },
-                notes: '官方活動列指定條件最優 NT$10 = 1 哩、海外一般交易 NT$15 = 1 哩；最優回饋有卡等年上限，且部分條件需登錄或符合長榮/海外指定消費定義。國內一般消費未在本頁估算。'
+                notes: '官方活動列 2026/1/1~2026/12/31 指定條件最優 NT$10 = 1 哩、交易地點非臺灣之一般交易視為海外消費享 NT$15 = 1 哩；最優 NT$10 = 1 哩依卡等有年度回饋上限，極致無限卡 20 萬哩、無限卡 15 萬哩、極致御璽卡 10 萬哩，且部分條件需登錄或符合長榮/海外指定消費定義。國內一般消費因卡等不同，本頁未估算。'
             },
             cube_info: {
                 name: '國泰世華 CUBE卡 - 小樹點資訊',
                 issuer: '國泰世華銀行',
                 earnType: '小樹點(信用卡)',
                 sourceUrl: 'https://www.cathaybk.com.tw/cathaybk/-/media/fddd4d9d98754438a663ee9129eb345a.pdf?sc_lang=en',
-                lastChecked: '2026-05-20',
+                lastChecked: '2026-05-21',
                 nonMileage: true,
                 pointRates: { domestic: 3, overseas: 3, bonus: 30 },
                 rates: {
@@ -570,7 +570,7 @@ window.app = {
                     overseas: { eva: null, ci: null, cx: null },
                     bonus: { eva: null, ci: null, cx: null }
                 },
-                notes: '官方權益手冊列 2026/6/30 前一般消費 0.3% 小樹點回饋，指定權益方案通路通常為 3% 小樹點；小樹點可折抵或參加航空哩程/飯店積分兌換，但兌換比例與通路條件需另以 CUBE App/官網為準，因此本頁不直接換算航空哩程。'
+                notes: '官方權益手冊列 2026/6/30 前一般消費 0.3% 小樹點回饋；指定權益方案需先在 CUBE App 切換，每日可切換一次。市面資訊與官方活動頁顯示指定方案會依 CUBE 等級與通路不同落在約 2%、3%、3.3% 或限時更高回饋，本頁「指定加碼/活動條件」先用 Level 2 常見 3% 估算；小樹點可折抵或參加航空哩程/飯店積分兌換，但兌換比例與通路條件需以 CUBE App/官網為準，因此本頁不直接換算航空哩程。'
             }
         }
     },
