@@ -607,6 +607,20 @@ window.app = {
         app.updateCalculator();
     },
 
+    updateSpendAmount: (value, source = 'input') => {
+        const slider = document.getElementById('calc-spend-slider');
+        const input = document.getElementById('calc-spend-input');
+        const min = parseInt(slider.min, 10);
+        const max = parseInt(slider.max, 10);
+        let amount = parseInt(value, 10);
+        if (!Number.isFinite(amount)) amount = min;
+        amount = Math.min(max, Math.max(min, amount));
+        app.calcState.amount = amount;
+        if (source !== 'slider' && slider) slider.value = amount;
+        if (input) input.value = amount;
+        app.updateCalculator();
+    },
+
     updateCubePointsSummary: (card, spendType, amount) => {
         const input = document.getElementById('cube-current-points');
         const summary = document.getElementById('cube-points-summary');
@@ -629,6 +643,12 @@ window.app = {
         const slider = document.getElementById('calc-spend-slider');
         const amount = parseInt(slider.value, 10);
         app.calcState.amount = amount;
+        const spendInput = document.getElementById('calc-spend-input');
+        if (spendInput && document.activeElement !== spendInput) {
+            spendInput.value = amount;
+        }
+        const ownedInput = document.getElementById('current-miles-input');
+        const ownedMiles = Math.max(0, Math.floor(Number(ownedInput?.value) || 0));
         
         // Display formatted amount
         document.getElementById('calc-spend-display').innerText = amount.toLocaleString();
@@ -674,6 +694,7 @@ window.app = {
         }
         
         // Update airlines
+        const airlineResults = [];
         const updateAirline = (key, name) => {
             const rate = rates[key];
             const statusEl = document.getElementById(`${key}-status`);
@@ -687,30 +708,68 @@ window.app = {
                 return;
             }
             
-            const miles = Math.floor(amount / rate);
+            const earnedMiles = Math.floor(amount / rate);
             const target = targets[key];
-            const missingMiles = Math.max(0, target - miles);
+            const totalMiles = ownedMiles + earnedMiles;
+            const missingMiles = Math.max(0, target - totalMiles);
             const reqSpend = missingMiles * rate;
             
-            document.getElementById(`${key}-miles`).innerText = miles.toLocaleString();
+            document.getElementById(`${key}-miles`).innerText = totalMiles.toLocaleString();
             
-            const pct = Math.min(100, Math.floor((miles / target) * 100));
+            const pct = Math.min(100, Math.floor((totalMiles / target) * 100));
             document.getElementById(`${key}-progress`).style.width = pct + '%';
             
             if (missingMiles > 0) {
-                statusEl.innerHTML = `距離解鎖機票，您還需消費：NT$ ${reqSpend.toLocaleString()}`;
+                statusEl.innerHTML = `已含目前持有 ${ownedMiles.toLocaleString()} 哩，還差 ${missingMiles.toLocaleString()} 哩；約需再消費 NT$ ${reqSpend.toLocaleString()}`;
                 statusEl.style.color = 'var(--text-main)';
                 ctaBtn.classList.remove('hidden');
             } else {
-                statusEl.innerHTML = `🎉 恭喜！您已達標`;
+                statusEl.innerHTML = `已達標，可以準備查票或兌換。`;
                 statusEl.style.color = 'var(--primary)';
                 ctaBtn.classList.add('hidden');
             }
+
+            airlineResults.push({ key, name, rate, target, earnedMiles, totalMiles, missingMiles, reqSpend });
         };
         
         updateAirline('eva', '長榮');
         updateAirline('ci', '華航');
         updateAirline('cx', '國泰');
+
+        const summaryTitle = document.getElementById('best-summary-title');
+        const summaryEarned = document.getElementById('best-earned');
+        const summaryTotal = document.getElementById('best-total');
+        const summaryMissing = document.getElementById('best-missing');
+        const summaryCta = document.getElementById('best-cta');
+        const bestResult = airlineResults
+            .filter(item => Number.isFinite(item.rate))
+            .sort((a, b) => a.missingMiles - b.missingMiles || b.earnedMiles - a.earnedMiles)[0];
+
+        if (card.nonMileage) {
+            const points = Math.floor((amount / 1000) * (card.pointRates[spendType] ?? 0));
+            const cubeOwned = Math.max(0, Math.floor(Number(document.getElementById('cube-current-points')?.value) || ownedMiles));
+            summaryTitle.innerText = '這張卡適合先看小樹點回饋，不適合直接推算固定航空哩程。';
+            summaryEarned.innerText = `${points.toLocaleString()} 點`;
+            summaryTotal.innerText = `${(cubeOwned + points).toLocaleString()} 點`;
+            summaryMissing.innerText = '依兌換規則';
+            summaryCta.classList.add('hidden');
+        } else if (bestResult) {
+            summaryTitle.innerText = bestResult.missingMiles > 0
+                ? `目前最接近達標的是${bestResult.name}，還差 ${bestResult.missingMiles.toLocaleString()} 哩。`
+                : `${bestResult.name}已達標，可以先查票再決定是否需要媒合。`;
+            summaryEarned.innerText = `${bestResult.earnedMiles.toLocaleString()} 哩`;
+            summaryTotal.innerText = `${bestResult.totalMiles.toLocaleString()} 哩`;
+            summaryMissing.innerText = `${bestResult.missingMiles.toLocaleString()} 哩`;
+            summaryCta.classList.toggle('hidden', bestResult.missingMiles === 0);
+            const categoryMap = { eva: '長榮哩程', ci: '華航哩程', cx: '亞洲萬里通' };
+            summaryCta.onclick = () => app.jumpToMatchmaking(categoryMap[bestResult.key]);
+        } else {
+            summaryTitle.innerText = '此卡在目前情境沒有可比較的航空哩程資料。';
+            summaryEarned.innerText = 'N/A';
+            summaryTotal.innerText = 'N/A';
+            summaryMissing.innerText = 'N/A';
+            summaryCta.classList.add('hidden');
+        }
         
         // AI Diagnosis
         const aiEl = document.getElementById('ai-diagnosis');
@@ -725,7 +784,7 @@ window.app = {
                 { key: 'cx', label: '亞洲萬里通', rate: rates.cx, target: targets.cx }
             ].filter(item => Number.isFinite(item.rate));
             const best = candidates.sort((a, b) => a.rate - b.rate)[0];
-            const miles = Math.floor(amount / best.rate);
+            const miles = ownedMiles + Math.floor(amount / best.rate);
             const missing = Math.max(0, best.target - miles);
             if (missing > 0) {
                 aiEl.innerHTML = `${card.name} 在「${scenarioLabel}」下，目前較適合累積 <span class="font-bold text-primary">${best.label}</span>。若要達標，還差約 <span class="font-bold text-danger">${missing.toLocaleString()}</span> 哩；此估算未納入登錄、上限、不回饋項目與活動期間限制。`;

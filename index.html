@@ -162,16 +162,22 @@
         <!-- View: Calculator (SmartMile) -->
         <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程/點數最佳化 <span class="version-badge">V3</span></div>
+                <div class="header-title">哩程/點數最佳化 <span class="version-badge">V4</span></div>
             </header>
             <div class="view-content p-4">
                 <div class="card mb-4 bg-primary-bg border border-primary">
                     <h3 class="font-bold mb-2 text-primary-dark">先算缺口，再決定是否媒合</h3>
                     <p class="text-sm text-gray leading-relaxed">選擇目標航線與信用卡，估算還差多少哩程。若刷卡累積太慢，可從缺口直接前往媒合頁尋找可轉讓點數。</p>
                     <div class="version-note mt-3">
-                        <span class="font-bold">V3</span>
-                        <span>更新日誌：重新交叉比對 2026 官方信用卡權益，修正星展與滙豐哩程估算。</span>
+                        <span class="font-bold">V4</span>
+                        <span>更新日誌：加入已有哩程輸入、金額手動輸入與一眼看懂的最佳建議。</span>
                     </div>
+                </div>
+                <div class="flow-steps mb-4">
+                    <div class="flow-step active"><span>1</span>選航線</div>
+                    <div class="flow-step"><span>2</span>填已有哩程</div>
+                    <div class="flow-step"><span>3</span>選卡試算</div>
+                    <div class="flow-step"><span>4</span>看缺口</div>
                 </div>
                 <!-- Flight Route Selection -->
                 <div class="card mb-4">
@@ -202,10 +208,15 @@
                 </div>
 
                 <div class="card mb-4">
+                    <h3 class="font-bold mb-2">目前條件</h3>
+                    <label for="current-miles-input" class="font-bold text-sm">目前已持有的目標哩程/點數</label>
+                    <input type="number" id="current-miles-input" class="form-input mt-2 mb-3" min="0" step="100" placeholder="例如：12000" oninput="app.updateCalculator()" />
+                    <div class="text-xs text-gray mb-3">如果還沒有任何哩程可填 0。下方進度會用「已持有 + 本次預計累積」計算。</div>
                     <h3 class="font-bold mb-2">預計消費金額</h3>
                     <div class="text-center mb-2">
                         <span class="text-2xl font-bold text-primary">NT$ <span id="calc-spend-display">100,000</span></span>
                     </div>
+                    <input type="number" id="calc-spend-input" class="form-input mb-2" min="100000" max="2000000" step="10000" value="100000" oninput="app.updateSpendAmount(this.value, 'input')" />
                     <input type="range" id="calc-spend-slider" class="styled-slider w-full" min="100000" max="2000000" step="10000" value="100000" oninput="app.updateCalculator()">
                     <div class="flex justify-between text-xs text-gray mt-1">
                         <span>10萬</span>
@@ -246,6 +257,26 @@
                         <div class="text-gray leading-relaxed" id="card-info-notes">載入中...</div>
                         <div class="text-xs text-gray mt-2">最後查核：<span id="card-info-updated">2026-05-20</span> ｜ <a id="card-info-source" href="#" target="_blank" rel="noopener">銀行官方來源</a></div>
                     </div>
+                </div>
+
+                <div class="card mb-4 recommendation-card">
+                    <div class="text-xs text-primary-dark font-bold mb-1">目前最佳建議</div>
+                    <div class="recommendation-title" id="best-summary-title">請選擇信用卡並輸入條件</div>
+                    <div class="recommendation-grid mt-3">
+                        <div>
+                            <span class="text-xs text-gray">本次可累積</span>
+                            <strong id="best-earned">0</strong>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray">合計可用</span>
+                            <strong id="best-total">0</strong>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray">剩餘缺口</span>
+                            <strong id="best-missing">0</strong>
+                        </div>
+                    </div>
+                    <button class="btn-primary w-full mt-3" id="best-cta" onclick="app.jumpToMatchmaking('長榮哩程')">依缺口去媒合</button>
                 </div>
 
                 <div class="card mb-4" id="airlines-container">
