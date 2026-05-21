@@ -830,6 +830,41 @@ body {
     line-height: 1.35;
 }
 
+.handoff-card {
+    border: 1px solid rgba(141, 182, 0, 0.35);
+    background: #ffffff;
+}
+
+.handoff-row {
+    display: grid;
+    grid-template-columns: 1fr 28px 1fr;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.handoff-row > i {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--primary-bg);
+    color: var(--primary-dark);
+}
+
+.handoff-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.handoff-actions .btn-primary,
+.handoff-actions .btn-secondary {
+    width: 100%;
+    min-height: 42px;
+}
+
 .cube-points-panel {
     margin-bottom: 0.75rem;
     padding: 0.75rem;

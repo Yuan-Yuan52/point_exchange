@@ -852,6 +852,26 @@ window.app = {
         }
     },
 
+    openPostFromCalculator: () => {
+        const activeNav = document.querySelector('.nav-item[data-target="view-post"]');
+        if (activeNav) activeNav.click();
+        app.setPostType('buy');
+        const missingText = document.getElementById('best-missing')?.innerText || '';
+        const note = document.getElementById('post-note');
+        const amount = document.getElementById('post-amount');
+        if (note && !note.value) {
+            note.value = `我用試算工具估算後還有缺口：${missingText}。想找可協助補足的點數或哩程資訊。`;
+        }
+        if (amount && !amount.value) {
+            amount.value = parseInt(missingText.replace(/[^\d]/g, ''), 10) || '';
+            app.updateRecommendedPrice();
+        }
+    },
+
+    showAppComingSoon: () => {
+        alert('App 承接功能規劃：保存這次試算、追蹤缺口、價格提醒、點數到期提醒與媒合訊息通知。');
+    },
+
     jumpToMatchmaking: (airlineName) => {
         app.switchFeedTab('buy');
         state.activeCategory = airlineName;
