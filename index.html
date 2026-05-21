@@ -13,7 +13,7 @@
     <!-- Phosphor Icons (Lightweight modern icons) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="./index.css?v=7">
+    <link rel="stylesheet" href="./index.css?v=8">
 </head>
 <body>
     <!-- App Container (Mobile Simulator on Desktop) -->
@@ -162,29 +162,35 @@
         <!-- View: Calculator (SmartMile) -->
         <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程缺口試算 <span class="version-badge">V7</span></div>
+                <div class="header-title">哩程缺口試算 <span class="version-badge">V8</span></div>
             </header>
             <div class="view-content p-4 simple-calculator">
                 <section class="simple-hero">
                     <div>
                         <div class="text-xs text-primary-dark font-bold mb-1">不用登入，先算一次</div>
                         <h2>還差多少哩？</h2>
-                        <p>填入目的地、已有哩程與預計消費，立刻看缺口與下一步。</p>
+                        <p>選 A 點到 B 點，填入已有哩程與預計消費，先看還需要消費多少。</p>
                     </div>
                 </section>
 
                 <section class="simple-panel">
                     <div class="compact-field">
-                        <label for="route-to">目的地</label>
+                        <label for="route-to">航線</label>
                         <div class="inline-selects">
-                            <select id="route-from" class="form-input" aria-label="出發地">
-                                <option value="TPE">台北</option>
+                            <select id="route-from" class="form-input" onchange="app.updateRouteTarget()" aria-label="出發地">
+                                <option value="TPE">台北 TPE</option>
+                                <option value="TSA">台北 TSA</option>
+                                <option value="KHH">高雄 KHH</option>
                             </select>
                             <select id="route-to" class="form-input" onchange="app.updateRouteTarget()" aria-label="目的地">
-                                <option value="ASIA">亞洲</option>
-                                <option value="HKG">港澳</option>
-                                <option value="US">美洲</option>
-                                <option value="EUR">歐洲</option>
+                                <option value="TYO">東京 TYO</option>
+                                <option value="SEL">首爾 SEL</option>
+                                <option value="BKK">曼谷 BKK</option>
+                                <option value="HKG">香港 HKG</option>
+                                <option value="LAX">洛杉磯 LAX</option>
+                                <option value="NYC">紐約 NYC</option>
+                                <option value="LON">倫敦 LON</option>
+                                <option value="PAR">巴黎 PAR</option>
                             </select>
                         </div>
                     </div>
@@ -246,7 +252,7 @@
                             <strong id="best-total">0</strong>
                         </div>
                         <div>
-                            <span>剩餘缺口</span>
+                            <span>還需消費</span>
                             <strong id="best-missing">0</strong>
                         </div>
                     </div>
@@ -275,7 +281,7 @@
                 <details class="advanced-details">
                     <summary>進階明細與官方資料</summary>
                     <div id="route-info-box" class="mt-3 p-3 bg-primary-bg rounded text-sm hidden">
-                        <div class="font-bold text-primary-dark mb-1" id="route-info-title">台北 ➔ 亞洲</div>
+                        <div class="font-bold text-primary-dark mb-1" id="route-info-title">台北 TPE ➔ 東京 TYO</div>
                         <div class="flex justify-between text-xs mt-1">
                             <span>長榮: <span id="route-info-eva" class="font-bold">35,000</span> 哩</span>
                             <span>華航: <span id="route-info-ci" class="font-bold">35,000</span> 哩</span>
@@ -452,6 +458,6 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="./app.js?v=7"></script>
+    <script src="./app.js?v=8"></script>
 </body>
 </html>

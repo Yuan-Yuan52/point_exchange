@@ -460,10 +460,14 @@ window.app = {
             cx: 20000
         },
         routeTargets: {
-            'ASIA': { eva: 35000, ci: 35000, cx: 20000 },
+            'TYO': { eva: 35000, ci: 35000, cx: 20000 },
+            'SEL': { eva: 35000, ci: 35000, cx: 20000 },
+            'BKK': { eva: 35000, ci: 35000, cx: 20000 },
             'HKG': { eva: 20000, ci: 20000, cx: 15000 },
-            'US': { eva: 100000, ci: 100000, cx: 60000 },
-            'EUR': { eva: 100000, ci: 100000, cx: 60000 }
+            'LAX': { eva: 100000, ci: 100000, cx: 60000 },
+            'NYC': { eva: 100000, ci: 100000, cx: 60000 },
+            'LON': { eva: 100000, ci: 100000, cx: 60000 },
+            'PAR': { eva: 100000, ci: 100000, cx: 60000 }
         },
         topUpLinks: {
             eva: {
@@ -603,15 +607,17 @@ window.app = {
     },
     
     updateRouteTarget: () => {
+        const fromSelect = document.getElementById('route-from');
         const routeSelect = document.getElementById('route-to');
         const dest = routeSelect.value;
+        const fromText = fromSelect.options[fromSelect.selectedIndex].text;
         const destText = routeSelect.options[routeSelect.selectedIndex].text;
         const targets = app.calcState.routeTargets[dest];
         app.calcState.targets = { ...targets };
         
         // Update the explicit info box
         document.getElementById('route-info-box').classList.remove('hidden');
-        document.getElementById('route-info-title').innerText = `台北 (TPE) ➔ ${destText} 經濟艙來回`;
+        document.getElementById('route-info-title').innerText = `${fromText} ➔ ${destText} 經濟艙來回`;
         document.getElementById('route-info-eva').innerText = targets.eva.toLocaleString();
         document.getElementById('route-info-ci').innerText = targets.ci.toLocaleString();
         document.getElementById('route-info-cx').innerText = targets.cx.toLocaleString();
@@ -784,6 +790,7 @@ window.app = {
             summaryEarned.innerText = `${points.toLocaleString()} 點`;
             summaryTotal.innerText = `${(cubeOwned + points).toLocaleString()} 點`;
             summaryMissing.innerText = '依兌換規則';
+            summaryMissing.dataset.missingMiles = '';
             summaryCta?.classList.add('hidden');
             const cubeLink = app.calcState.topUpLinks.cube;
             officialTopUpLink.href = cubeLink.url;
@@ -794,11 +801,12 @@ window.app = {
             matchmakingNote.innerText = '小樹點目前先以官方權益與折抵規則為主。';
         } else if (bestResult) {
             summaryTitle.innerText = bestResult.missingMiles > 0
-                ? `目前最接近達標的是${bestResult.name}，還差 ${bestResult.missingMiles.toLocaleString()} 哩。`
+                ? `${bestResult.name}還差 ${bestResult.missingMiles.toLocaleString()} 哩，約需再消費 NT$ ${bestResult.reqSpend.toLocaleString()}。`
                 : `${bestResult.name}已達標，可以先查票再決定是否需要媒合。`;
             summaryEarned.innerText = `${bestResult.earnedMiles.toLocaleString()} 哩`;
             summaryTotal.innerText = `${bestResult.totalMiles.toLocaleString()} 哩`;
-            summaryMissing.innerText = `${bestResult.missingMiles.toLocaleString()} 哩`;
+            summaryMissing.innerText = bestResult.missingMiles > 0 ? `NT$ ${bestResult.reqSpend.toLocaleString()}` : '已達標';
+            summaryMissing.dataset.missingMiles = String(bestResult.missingMiles);
             summaryCta?.classList.toggle('hidden', bestResult.missingMiles === 0);
             const categoryMap = { eva: '長榮哩程', ci: '華航哩程', cx: '亞洲萬里通' };
             if (summaryCta) summaryCta.onclick = () => app.jumpToMatchmaking(categoryMap[bestResult.key]);
@@ -821,6 +829,7 @@ window.app = {
             summaryEarned.innerText = 'N/A';
             summaryTotal.innerText = 'N/A';
             summaryMissing.innerText = 'N/A';
+            summaryMissing.dataset.missingMiles = '';
             summaryCta?.classList.add('hidden');
             const fallbackLink = cardKey.startsWith('hsbc') ? app.calcState.topUpLinks.hsbc : app.calcState.topUpLinks.eva;
             officialTopUpLink.href = fallbackLink.url;
@@ -858,14 +867,16 @@ window.app = {
         const activeNav = document.querySelector('.nav-item[data-target="view-post"]');
         if (activeNav) activeNav.click();
         app.setPostType('buy');
-        const missingText = document.getElementById('best-missing')?.innerText || '';
+        const missingEl = document.getElementById('best-missing');
+        const missingMiles = missingEl?.dataset.missingMiles || '';
+        const missingText = missingMiles ? `${Number(missingMiles).toLocaleString()} 哩` : (missingEl?.innerText || '');
         const note = document.getElementById('post-note');
         const amount = document.getElementById('post-amount');
         if (note && !note.value) {
             note.value = `我用試算工具估算後還有缺口：${missingText}。想找可協助補足的點數或哩程資訊。`;
         }
         if (amount && !amount.value) {
-            amount.value = parseInt(missingText.replace(/[^\d]/g, ''), 10) || '';
+            amount.value = parseInt(missingMiles || missingText.replace(/[^\d]/g, ''), 10) || '';
             app.updateRecommendedPrice();
         }
     },
