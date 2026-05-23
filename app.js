@@ -632,6 +632,10 @@ window.app = {
     
     setCalcCard: (card) => {
         app.calcState.card = card;
+        const cardSelect = document.getElementById('calc-card');
+        if (cardSelect && Array.from(cardSelect.options).some(option => option.value === card)) {
+            cardSelect.value = card;
+        }
         app.updateCalculator();
     },
 
@@ -670,6 +674,139 @@ window.app = {
         }
 
         summary.innerHTML = `目前持有 <span class="font-bold">${currentPoints.toLocaleString()}</span> 點；本次預計消費可再累積約 <span class="font-bold text-primary">${projectedPoints.toLocaleString()}</span> 點，合計約 <span class="font-bold text-primary">${totalPoints.toLocaleString()}</span> 小樹點。<br><span class="text-xs text-gray">小樹點折抵與兌換比例依 CUBE App、指定權益方案與通路規則為準，這裡先以點數總量做決策估算。</span>`;
+    },
+
+    buildDecision: (bestResult, card, spendType) => {
+        if (card.nonMileage) {
+            return {
+                primary: 'official',
+                title: '先確認 CUBE 權益與小樹點用途',
+                reason: 'CUBE 的回饋會受等級、權益方案、通路與活動期間影響，不適合直接和固定哩程卡混排。先用官方權益頁與 App 確認可用點數，再決定是否轉向哩程卡。',
+                officialLabel: '建議優先',
+                keepLabel: '備用',
+                matchLabel: '不建議',
+                keepNote: '小樹點可以先保存估算，但不當作固定航空哩程缺口。',
+                matchNote: '小樹點目前不建議進入哩程媒合。'
+            };
+        }
+
+        if (!bestResult) {
+            return {
+                primary: 'official',
+                title: '先換一張可估算的哩程卡',
+                reason: '目前卡片或消費情境沒有固定哩程換算資料，先不要做媒合判斷。',
+                officialLabel: '查官方',
+                keepLabel: '不適用',
+                matchLabel: '暫停',
+                keepNote: '缺少固定換算率，無法可靠追蹤缺口。',
+                matchNote: '資料不足時不建議媒合。'
+            };
+        }
+
+        if (bestResult.missingMiles === 0) {
+            return {
+                primary: 'official',
+                title: '已達標，先查票與確認兌換艙位',
+                reason: `${bestResult.name} 已達本航線估算門檻。這時不需要先媒合，應先確認可兌換日期、艙等與稅費。`,
+                officialLabel: '建議優先',
+                keepLabel: '備用追蹤',
+                matchLabel: '不建議',
+                keepNote: '可保存這次結果，之後追蹤票位或點數到期。',
+                matchNote: '已達標時先不需要媒合補點。'
+            };
+        }
+
+        if (bestResult.missingMiles <= 5000 || bestResult.reqSpend <= 80000) {
+            return {
+                primary: 'official',
+                title: '缺口小，先走官方補哩或短期補刷',
+                reason: `${bestResult.name} 還差 ${bestResult.missingMiles.toLocaleString()} 哩。缺口不大時，官方補哩或少量自然消費通常比媒合更單純。`,
+                officialLabel: '建議優先',
+                keepLabel: '次選',
+                matchLabel: '保留',
+                keepNote: `若近期本來就會消費，約再刷 NT$ ${bestResult.reqSpend.toLocaleString()} 可補足。`,
+                matchNote: '缺口小時不建議直接媒合，除非官方補哩不可用。'
+            };
+        }
+
+        if (bestResult.reqSpend <= 250000 && spendType !== 'bonus') {
+            return {
+                primary: 'keep',
+                title: '先評估近期自然消費能否補足',
+                reason: `${bestResult.name} 還差 ${bestResult.missingMiles.toLocaleString()} 哩，約需再消費 NT$ ${bestResult.reqSpend.toLocaleString()}。若這筆消費本來就會發生，繼續刷卡比立即媒合更適合。`,
+                officialLabel: '次選',
+                keepLabel: '建議優先',
+                matchLabel: '保留',
+                keepNote: '保存這次缺口，後續可做 App 追蹤、提醒與回來重算。',
+                matchNote: '若時間很急或消費不會自然發生，再看媒合供給。'
+            };
+        }
+
+        return {
+            primary: 'match',
+            title: '缺口偏大，先看媒合供給再決定',
+            reason: `${bestResult.name} 還差 ${bestResult.missingMiles.toLocaleString()} 哩，依目前卡片約需再消費 NT$ ${bestResult.reqSpend.toLocaleString()}。若沒有等額自然消費，媒合資訊可以作為下一步比較。`,
+            officialLabel: '先查規則',
+            keepLabel: '次選',
+            matchLabel: '建議優先',
+            keepNote: '若近期有大額自然消費，可先保存缺口再追蹤。',
+            matchNote: `帶著 ${bestResult.missingMiles.toLocaleString()} 哩缺口去媒合頁找資訊。`
+        };
+    },
+
+    applyDecision: (decision, bestResult) => {
+        const decisionKicker = document.getElementById('decision-kicker');
+        const decisionTitle = document.getElementById('decision-title');
+        const decisionReason = document.getElementById('decision-reason');
+        const officialBtn = document.getElementById('official-topup-link');
+        const keepBtn = document.getElementById('keep-earning-entry');
+        const matchmakingBtn = document.getElementById('matchmaking-entry-btn');
+        const officialLabel = document.getElementById('official-action-label');
+        const keepLabel = document.getElementById('keep-earning-label');
+        const matchmakingLabel = document.getElementById('matchmaking-action-label');
+        const keepNote = document.getElementById('keep-earning-note');
+        const matchmakingNote = document.getElementById('matchmaking-note');
+
+        decisionKicker.innerText = '建議下一步';
+        decisionTitle.innerText = decision.title;
+        decisionReason.innerText = decision.reason;
+        officialLabel.innerText = decision.officialLabel;
+        keepLabel.innerText = decision.keepLabel;
+        matchmakingLabel.innerText = decision.matchLabel;
+        keepNote.innerText = decision.keepNote;
+        matchmakingNote.innerText = decision.matchNote;
+
+        [officialBtn, keepBtn, matchmakingBtn].forEach(btn => btn?.classList.remove('primary'));
+        if (decision.primary === 'keep') keepBtn.classList.add('primary');
+        else if (decision.primary === 'match') matchmakingBtn.classList.add('primary');
+        else officialBtn.classList.add('primary');
+
+        const shouldHideMatch = !bestResult || bestResult.missingMiles === 0 || decision.matchLabel === '不建議' || decision.matchLabel === '暫停';
+        matchmakingBtn.classList.toggle('hidden', shouldHideMatch);
+        keepBtn.classList.toggle('hidden', decision.keepLabel === '不適用');
+    },
+
+    trackCurrentGap: () => {
+        const missingEl = document.getElementById('best-missing');
+        const missingMiles = Number(missingEl?.dataset.missingMiles || 0);
+        const card = app.calcState.cards[app.calcState.card];
+        const fromSelect = document.getElementById('route-from');
+        const toSelect = document.getElementById('route-to');
+        const record = {
+            createdAt: new Date().toISOString(),
+            from: fromSelect?.value || '',
+            to: toSelect?.value || '',
+            card: card?.name || '',
+            spendType: app.calcState.spendType,
+            plannedSpend: app.calcState.amount,
+            missingMiles,
+            summary: document.getElementById('best-summary-title')?.innerText || ''
+        };
+        const key = 'pointExchangeTrackedGaps';
+        const list = JSON.parse(localStorage.getItem(key) || '[]');
+        list.unshift(record);
+        localStorage.setItem(key, JSON.stringify(list.slice(0, 20)));
+        alert('已保存這次試算。之後 App 版可以把這筆資料用在缺口追蹤、價格提醒與媒合通知。');
     },
     
     updateCalculator: () => {
@@ -796,9 +933,7 @@ window.app = {
             officialTopUpLink.href = cubeLink.url;
             officialTopUpLink.querySelector('span').innerText = cubeLink.label;
             officialTopUpNote.innerText = cubeLink.note;
-            if (keepEarningNote) keepEarningNote.innerText = '切換 CUBE 權益方案與通路後，再用小樹點合計判斷是否足夠。';
-            matchmakingBtn.classList.add('hidden');
-            matchmakingNote.innerText = '小樹點目前先以官方權益與折抵規則為主。';
+            app.applyDecision(app.buildDecision(null, card, spendType), null);
         } else if (bestResult) {
             summaryTitle.innerText = bestResult.missingMiles > 0
                 ? `${bestResult.name}還差 ${bestResult.missingMiles.toLocaleString()} 哩，約需再消費 NT$ ${bestResult.reqSpend.toLocaleString()}。`
@@ -814,16 +949,8 @@ window.app = {
             officialTopUpLink.href = topUpLink.url;
             officialTopUpLink.querySelector('span').innerText = topUpLink.label;
             officialTopUpNote.innerText = topUpLink.note;
-            if (keepEarningNote) {
-                keepEarningNote.innerText = bestResult.missingMiles > 0
-                    ? `依目前卡片與情境，約需再刷 NT$ ${bestResult.reqSpend.toLocaleString()}。`
-                    : '已達標，建議先查票與確認兌換艙位。';
-            }
-            matchmakingBtn.classList.toggle('hidden', bestResult.missingMiles === 0);
             matchmakingBtn.onclick = () => app.jumpToMatchmaking(categoryMap[bestResult.key]);
-            matchmakingNote.innerText = bestResult.missingMiles > 0
-                ? `帶著 ${bestResult.missingMiles.toLocaleString()} 哩缺口去媒合頁找資訊。`
-                : '已達標時先不需要媒合補點。';
+            app.applyDecision(app.buildDecision(bestResult, card, spendType), bestResult);
         } else {
             summaryTitle.innerText = '此卡在目前情境沒有可比較的航空哩程資料。';
             summaryEarned.innerText = 'N/A';
@@ -835,9 +962,7 @@ window.app = {
             officialTopUpLink.href = fallbackLink.url;
             officialTopUpLink.querySelector('span').innerText = fallbackLink.label;
             officialTopUpNote.innerText = fallbackLink.note;
-            if (keepEarningNote) keepEarningNote.innerText = '請先換一張可估算的哩程卡或改選消費情境。';
-            matchmakingBtn.classList.add('hidden');
-            matchmakingNote.innerText = '目前沒有足夠資料產生媒合缺口。';
+            app.applyDecision(app.buildDecision(null, card, spendType), null);
         }
         
         // AI Diagnosis
@@ -882,7 +1007,7 @@ window.app = {
     },
 
     showAppComingSoon: () => {
-        alert('App 承接功能規劃：保存這次試算、追蹤缺口、價格提醒、點數到期提醒與媒合訊息通知。');
+        app.trackCurrentGap();
     },
 
     jumpToMatchmaking: (airlineName) => {

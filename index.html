@@ -13,7 +13,7 @@
     <!-- Phosphor Icons (Lightweight modern icons) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="./index.css?v=8">
+    <link rel="stylesheet" href="./index.css?v=9">
 </head>
 <body>
     <!-- App Container (Mobile Simulator on Desktop) -->
@@ -162,7 +162,7 @@
         <!-- View: Calculator (SmartMile) -->
         <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程缺口試算 <span class="version-badge">V8</span></div>
+                <div class="header-title">哩程缺口試算 <span class="version-badge">V9</span></div>
             </header>
             <div class="view-content p-4 simple-calculator">
                 <section class="simple-hero">
@@ -219,8 +219,15 @@
                             <option value="ctbc_ci_bright">中信華航璀璨無限卡</option>
                             <option value="ctbc_ci_business">中信華航商務御璽卡</option>
                             <option value="cathay_eva_bonus">國泰世華長榮航空聯名卡</option>
-                            <option value="cube_info">國泰世華 CUBE 小樹點</option>
                         </select>
+                    </div>
+
+                    <div class="cube-entry">
+                        <div>
+                            <strong>小樹點不是固定哩程卡</strong>
+                            <span>CUBE 會依等級、權益方案與通路改變回饋，不直接放進哩程卡排名。</span>
+                        </div>
+                        <button type="button" onclick="app.setCalcCard('cube_info')">改看小樹點估算</button>
                     </div>
 
                     <div class="compact-field">
@@ -236,12 +243,18 @@
                         <label for="cube-current-points" class="font-bold text-sm">目前持有小樹點</label>
                         <input type="number" id="cube-current-points" class="form-input mt-2" min="0" step="1" placeholder="例如：12000" oninput="app.updateCalculator()" />
                         <div id="cube-points-summary" class="cube-points-summary mt-3">請先輸入目前持有點數。</div>
+                        <button class="quiet-link compact" type="button" onclick="app.setCalcCard('dbs_world')">回到哩程信用卡比較</button>
                     </div>
                 </section>
 
                 <section class="result-panel">
                     <div class="text-xs text-primary-dark font-bold mb-1">試算結果</div>
                     <h2 id="best-summary-title">請輸入條件</h2>
+                    <div class="decision-box">
+                        <span id="decision-kicker">建議下一步</span>
+                        <strong id="decision-title">先完成試算</strong>
+                        <p id="decision-reason">輸入目前持有哩程與預計消費後，系統會依缺口大小排序補點路徑。</p>
+                    </div>
                     <div class="result-metrics">
                         <div>
                             <span>本次累積</span>
@@ -262,17 +275,20 @@
                     <a class="action-button primary" id="official-topup-link" href="https://www.evaair.com/zh-tw/infinity-mileagelands/mileage-award-program/purchase-miles/" target="_blank" rel="noopener">
                         <i class="ph ph-bank"></i>
                         <span>官方補哩</span>
+                        <em id="official-action-label">建議優先</em>
                         <small id="official-topup-note">前往航空公司或銀行官方入口</small>
                     </a>
+                    <button class="action-button" type="button" id="keep-earning-entry" onclick="app.trackCurrentGap()">
+                        <i class="ph ph-credit-card"></i>
+                        <span>繼續刷卡累積</span>
+                        <em id="keep-earning-label">次選</em>
+                        <small id="keep-earning-note">保存缺口，之後用 App 追蹤</small>
+                    </button>
                     <button class="action-button" type="button" id="matchmaking-entry-btn" onclick="app.jumpToMatchmaking('長榮哩程')">
                         <i class="ph ph-users-three"></i>
                         <span>媒合找點數</span>
-                        <small id="matchmaking-note">找可協助補足缺口的人</small>
-                    </button>
-                    <button class="action-button" type="button" id="publish-demand-entry" onclick="app.openPostFromCalculator()">
-                        <i class="ph ph-note-pencil"></i>
-                        <span>發布需求</span>
-                        <small>把缺口帶到發布頁</small>
+                        <em id="matchmaking-action-label">保留方案</em>
+                        <small id="matchmaking-note">缺口大時再找市場供給</small>
                     </button>
                 </section>
 
@@ -458,6 +474,6 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="./app.js?v=8"></script>
+    <script src="./app.js?v=9"></script>
 </body>
 </html>
