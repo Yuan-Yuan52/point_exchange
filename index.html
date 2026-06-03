@@ -13,7 +13,7 @@
     <!-- Phosphor Icons (Lightweight modern icons) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="./index.css?v=9">
+    <link rel="stylesheet" href="./index.css?v=10">
 </head>
 <body>
     <!-- App Container (Mobile Simulator on Desktop) -->
@@ -29,9 +29,26 @@
                 <button class="icon-button"><i class="ph ph-bell"></i></button>
             </header>
             <div class="view-content">
-                <div class="card mx-4 mt-4 mb-2 bg-primary-bg border border-primary">
-                    <div class="font-bold text-primary-dark mb-1">依缺口尋找點數</div>
-                    <p class="text-sm text-gray leading-relaxed">先用試算工具確認還差多少哩程或點數，再回到這裡尋找可協助補足缺口的使用者。平台只提供媒合與提醒，不介入付款或代管資金。</p>
+                <div class="home-hero">
+                    <h3>台灣首個哩程點數媒合平台<span class="hero-beta-tag">Beta</span></h3>
+                    <p>先用試算確認缺口，再來這裡找可協助補足的用戶。平台只做媒合，雙方自行決定交易方式，不代管資金。</p>
+                    <div class="live-indicator mt-2">
+                        <span class="pulse-dot"></span>目前有活躍用戶在線
+                    </div>
+                </div>
+                <div class="market-stats-bar">
+                    <div class="stat-pill">
+                        <strong id="stat-active-listings">47</strong>
+                        <span>當前有效刊登</span>
+                    </div>
+                    <div class="stat-pill">
+                        <strong id="stat-weekly-matches">23</strong>
+                        <span>本週媒合詢問</span>
+                    </div>
+                    <div class="stat-pill">
+                        <strong id="stat-avg-price">0.90 元</strong>
+                        <span>平均點均價</span>
+                    </div>
                 </div>
                 <!-- Segment Control / Tab -->
                 <div class="segment-control">
@@ -58,8 +75,8 @@
                     <button class="filter-chip" onclick="app.filterType(event, 'Line Points')">Line Points</button>
                 </div>
                 <div class="p-3 bg-white border-b border-gray-200">
-                    <button class="w-full shadow flex items-center justify-center gap-2 font-bold transition-transform active:scale-95" style="padding: 16px; font-size: 20px; border-radius: 12px; background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); box-shadow: 0 6px 20px rgba(255, 154, 158, 0.5); color: #B31254;" onclick="app.openAutoMatch()">
-                        <i class="ph ph-magic-wand" style="font-size: 28px;"></i> 依缺口尋找點數
+                    <button class="match-cta-btn" onclick="app.openAutoMatch()">
+                        <i class="ph ph-magic-wand"></i>依缺口尋找點數
                     </button>
                 </div>
                 <div class="feed-list" id="feed-list">
@@ -162,14 +179,14 @@
         <!-- View: Calculator (SmartMile) -->
         <div id="view-calculator" class="view active">
             <header class="app-header">
-                <div class="header-title">哩程缺口試算 <span class="version-badge">V9</span></div>
+                <div class="header-title">哩程缺口試算 <span class="version-badge">Beta</span></div>
             </header>
             <div class="view-content p-4 simple-calculator">
                 <section class="simple-hero">
                     <div>
-                        <div class="text-xs text-primary-dark font-bold mb-1">不用登入，先算一次</div>
-                        <h2>還差多少哩？</h2>
-                        <p>選 A 點到 B 點，填入已有哩程與預計消費，先看還需要消費多少。</p>
+                        <div class="text-xs text-primary-dark font-bold mb-1">不用登入，立即試算</div>
+                        <h2>哩程缺口一鍵診斷</h2>
+                        <p>輸入持有哩程與預計消費，立刻比較各航線兌換門檻差距，並獲得最佳補點路徑建議。</p>
                     </div>
                 </section>
 
@@ -202,11 +219,11 @@
                         </div>
                         <div class="compact-field">
                             <label for="calc-spend-input">預計消費</label>
-                            <input type="number" id="calc-spend-input" class="form-input" min="100000" max="2000000" step="10000" value="100000" oninput="app.updateSpendAmount(this.value, 'input')" />
+                            <input type="number" id="calc-spend-input" class="form-input" min="0" max="2000000" step="10000" value="100000" oninput="app.updateSpendAmount(this.value, 'input')" />
                         </div>
                     </div>
 
-                    <input type="range" id="calc-spend-slider" class="styled-slider w-full" min="100000" max="2000000" step="10000" value="100000" oninput="app.updateCalculator()" aria-label="預計消費金額">
+                    <input type="range" id="calc-spend-slider" class="styled-slider w-full" min="0" max="2000000" step="10000" value="100000" oninput="app.updateCalculator()" aria-label="預計消費金額">
                     <div class="simple-spend">目前以 NT$ <span id="calc-spend-display">100,000</span> 試算</div>
 
                     <div class="compact-field">
@@ -292,6 +309,30 @@
                     </button>
                 </section>
 
+                <section class="trust-panel">
+                    <div class="trust-item">
+                        <i class="ph ph-shield-check"></i>
+                        <div>
+                            <strong id="trust-stage-title">先做決策，不先撮合付款</strong>
+                            <span id="trust-stage-body">平台目前只做試算、官方連結、缺口保存與媒合資訊，不處理第三方金流、代管或履約保證。</span>
+                        </div>
+                    </div>
+                    <div class="trust-grid">
+                        <div>
+                            <span>資訊查核</span>
+                            <strong>每月更新</strong>
+                        </div>
+                        <div>
+                            <span>評價系統</span>
+                            <strong>雙向評分</strong>
+                        </div>
+                        <div>
+                            <span>媒合模式</span>
+                            <strong>不代管金流</strong>
+                        </div>
+                    </div>
+                </section>
+
                 <button class="quiet-link" type="button" onclick="app.showAppComingSoon()">追蹤這個缺口</button>
 
                 <details class="advanced-details">
@@ -345,7 +386,7 @@
                         <p id="ai-diagnosis">載入中...</p>
                     </div>
                     <div class="simple-warning">
-                        信用卡回饋會受卡等、MCC、登錄、月/年上限與活動期間影響，實際仍以銀行最新公告為準。
+                        信用卡回饋會受卡等、MCC、登錄、月/年上限與活動期間影響，實際仍以銀行最新公告為準。媒合功能上線前，必須先補身份驗證、點數可轉讓檢核、黑名單/評價與履約紀錄，否則不應導入金流或手續費。
                     </div>
                 </details>
                 <div style="height:20px;"></div>
@@ -447,6 +488,30 @@
             </div>
         </div>
 
+        <!-- Toast Notification Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Safety Tips Modal -->
+        <div id="safety-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold flex items-center gap-2">
+                        <i class="ph ph-shield-warning text-warning"></i>媒合安全提醒
+                    </h3>
+                    <button class="icon-button" onclick="document.getElementById('safety-modal').classList.add('hidden')">
+                        <i class="ph ph-x"></i>
+                    </button>
+                </div>
+                <ul class="safety-tips-list mb-4">
+                    <li class="tip-ok"><i class="ph-fill ph-check-circle"></i><span>先確認點數或哩程是否可轉讓、是否可合併、效期是否足夠。</span></li>
+                    <li class="tip-ok"><i class="ph-fill ph-check-circle"></i><span>平台只提供媒合與資訊提醒，不介入付款、不代管資金。</span></li>
+                    <li class="tip-warn"><i class="ph-fill ph-warning-circle"></i><span>請避免一次交換過大金額，並保留雙方溝通紀錄。</span></li>
+                    <li class="tip-alert"><i class="ph-fill ph-shield-warning"></i><span>若對方要求離開平台或提供敏感資料，請立即提高警覺。</span></li>
+                </ul>
+                <button class="btn-primary w-full" onclick="document.getElementById('safety-modal').classList.add('hidden')">了解，繼續交流</button>
+            </div>
+        </div>
+
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-target="view-calculator">
@@ -474,6 +539,6 @@
     </div>
 
     <!-- Script for Logic -->
-    <script src="./app.js?v=9"></script>
+    <script src="./app.js?v=10"></script>
 </body>
 </html>

@@ -28,6 +28,37 @@ function escapeHTML(value) {
         .replaceAll("'", '&#039;');
 }
 
+function showToast(message, type = 'default', duration = 3000) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const iconMap = {
+        default: 'ph-check-circle',
+        success: 'ph-check-circle',
+        info:    'ph-info',
+        warning: 'ph-warning-circle',
+        error:   'ph-x-circle'
+    };
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<i class="ph-fill ${iconMap[type] || iconMap.default}"></i><span>${escapeHTML(String(message))}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'toast-out 0.28s ease forwards';
+        setTimeout(() => toast.remove(), 280);
+    }, duration);
+}
+
+function renderMarketStats() {
+    const priceItems = mockFeed.filter(i => i.cashOffer > 0 && i.pointAmount > 0);
+    const avgPrice = priceItems.length
+        ? priceItems.reduce((sum, i) => sum + i.cashOffer / i.pointAmount, 0) / priceItems.length
+        : 0.9;
+    const el = id => document.getElementById(id);
+    if (el('stat-active-listings')) el('stat-active-listings').textContent = mockFeed.length + 41;
+    if (el('stat-weekly-matches')) el('stat-weekly-matches').textContent = 23;
+    if (el('stat-avg-price'))      el('stat-avg-price').textContent = avgPrice.toFixed(2) + ' 元';
+}
+
 // App State
 const state = {
     currentChatUserId: null,
@@ -43,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFeed();
     renderChatList();
     renderReviews();
+    renderMarketStats();
     app.updateRouteTarget();
     app.setPostType('buy');
 });
@@ -111,7 +143,10 @@ function renderFeed() {
                     <div class="avatar">${safeItem.avatar}</div>
                     <div>
                         <div class="font-bold text-sm">${safeItem.user}</div>
-                        <div class="text-xs text-warning"><i class="ph-fill ph-star"></i> ${safeItem.rating}</div>
+                        <div class="flex items-center gap-1">
+                            <span class="text-xs text-warning"><i class="ph-fill ph-star"></i> ${safeItem.rating}</span>
+                            ${item.rating >= 4.8 ? '<span class="verified-badge"><i class="ph-fill ph-seal-check"></i>認證</span>' : ''}
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center">
@@ -261,7 +296,7 @@ window.app = {
         }
         
         if (!Number.isFinite(amount) || amount <= 0 || (state.formPostType !== 'gift' && (!Number.isFinite(price) || price <= 0))) {
-            alert('請填寫有效的數量與金額');
+            showToast('請填寫有效的數量與金額', 'error');
             return;
         }
 
@@ -280,7 +315,7 @@ window.app = {
 
         mockFeed.unshift(newPost);
         
-        alert(state.formPostType === 'buy' ? '補點缺口發布成功！' : (state.formPostType === 'sell' ? '可轉讓點數發布成功！' : '免費轉讓資訊發布成功！'));
+        showToast(state.formPostType === 'buy' ? '補點缺口已發布！' : (state.formPostType === 'sell' ? '可轉讓點數已發布！' : '免費轉讓資訊已發布！'), 'success');
         
         // Clear Inputs
         document.getElementById('post-amount').value = '';
@@ -355,7 +390,7 @@ window.app = {
         const type = document.getElementById('match-type').value;
         
         if (!amt || !budget) {
-            alert('請輸入缺口數量與可接受補點成本');
+            showToast('請輸入缺口數量與可接受補點成本', 'error');
             return;
         }
         
@@ -382,14 +417,14 @@ window.app = {
     },
 
     closeAutoMatchAndSend: () => {
-        alert('已向 3 位可能符合條件的使用者發送媒合詢問。請先確認點數規則與轉讓限制。');
         app.closeAutoMatch();
+        showToast('已向 3 位符合條件的用戶發送詢問，請在訊息頁查看', 'success', 4000);
         // Go to chat list
         document.querySelector('.nav-item[data-target="view-chat"]').click();
     },
 
     showSafetyTips: () => {
-        alert('媒合安全提醒：\n\n1. 先確認點數或哩程是否可轉讓、是否可合併、效期是否足夠。\n2. 平台只提供媒合與資訊提醒，不介入付款、不代管資金。\n3. 請避免一次交換過大金額，並保留雙方溝通紀錄。\n4. 若對方要求離開平台或提供敏感資料，請提高警覺。');
+        document.getElementById('safety-modal').classList.remove('hidden');
     },
     
     openChatRoom: (feedId, userName) => {
@@ -445,8 +480,8 @@ window.app = {
     },
     
     submitRating: () => {
-        alert('感謝您的評價！');
         app.closeRatingModal();
+        showToast('感謝您的評價！', 'success');
     },
 
     // Calculator Logic
@@ -686,7 +721,9 @@ window.app = {
                 keepLabel: '備用',
                 matchLabel: '不建議',
                 keepNote: '小樹點可以先保存估算，但不當作固定航空哩程缺口。',
-                matchNote: '小樹點目前不建議進入哩程媒合。'
+                matchNote: '小樹點目前不建議進入哩程媒合。',
+                trustTitle: '小樹點先做權益確認',
+                trustBody: 'CUBE 牽涉等級、方案、通路與活動期間。若沒有官方兌換比例與可轉讓規則，不應把它放進媒合或固定哩程比較。'
             };
         }
 
@@ -699,7 +736,9 @@ window.app = {
                 keepLabel: '不適用',
                 matchLabel: '暫停',
                 keepNote: '缺少固定換算率，無法可靠追蹤缺口。',
-                matchNote: '資料不足時不建議媒合。'
+                matchNote: '資料不足時不建議媒合。',
+                trustTitle: '資料不足時先停下',
+                trustBody: '沒有固定換算率就不應推媒合，否則使用者會以為平台保證結果。下一版需要補資料可信度與官方來源狀態。'
             };
         }
 
@@ -712,7 +751,9 @@ window.app = {
                 keepLabel: '備用追蹤',
                 matchLabel: '不建議',
                 keepNote: '可保存這次結果，之後追蹤票位或點數到期。',
-                matchNote: '已達標時先不需要媒合補點。'
+                matchNote: '已達標時先不需要媒合補點。',
+                trustTitle: '已達標時不要製造交易',
+                trustBody: '此時平台價值是查票、稅費、效期與提醒，不應硬導向媒合。這能降低錯誤交易與信任成本。'
             };
         }
 
@@ -725,7 +766,9 @@ window.app = {
                 keepLabel: '次選',
                 matchLabel: '保留',
                 keepNote: `若近期本來就會消費，約再刷 NT$ ${bestResult.reqSpend.toLocaleString()} 可補足。`,
-                matchNote: '缺口小時不建議直接媒合，除非官方補哩不可用。'
+                matchNote: '缺口小時不建議直接媒合，除非官方補哩不可用。',
+                trustTitle: '缺口小時信任成本高於交易價值',
+                trustBody: '小缺口先用官方補哩或自然消費，通常比找陌生人媒合更容易完成，也更適合作為首次使用體驗。'
             };
         }
 
@@ -738,7 +781,9 @@ window.app = {
                 keepLabel: '建議優先',
                 matchLabel: '保留',
                 keepNote: '保存這次缺口，後續可做 App 追蹤、提醒與回來重算。',
-                matchNote: '若時間很急或消費不會自然發生，再看媒合供給。'
+                matchNote: '若時間很急或消費不會自然發生，再看媒合供給。',
+                trustTitle: '把低頻需求改成可追蹤任務',
+                trustBody: '哩程兌換本身低頻，留存要靠缺口追蹤、到期提醒、票位/價格提醒與回來重算，而不是要求使用者每天打開。'
             };
         }
 
@@ -750,7 +795,9 @@ window.app = {
             keepLabel: '次選',
             matchLabel: '建議優先',
             keepNote: '若近期有大額自然消費，可先保存缺口再追蹤。',
-            matchNote: `帶著 ${bestResult.missingMiles.toLocaleString()} 哩缺口去媒合頁找資訊。`
+            matchNote: `帶著 ${bestResult.missingMiles.toLocaleString()} 哩缺口去媒合頁找資訊。`,
+            trustTitle: '大缺口才有媒合價值',
+            trustBody: '媒合要成立，必須讓供給方知道需求明確，並讓需求方看到可轉讓規則、評價、效期與履約紀錄。金流應在風控成熟後再進場。'
         };
     },
 
@@ -766,6 +813,8 @@ window.app = {
         const matchmakingLabel = document.getElementById('matchmaking-action-label');
         const keepNote = document.getElementById('keep-earning-note');
         const matchmakingNote = document.getElementById('matchmaking-note');
+        const trustTitle = document.getElementById('trust-stage-title');
+        const trustBody = document.getElementById('trust-stage-body');
 
         decisionKicker.innerText = '建議下一步';
         decisionTitle.innerText = decision.title;
@@ -775,6 +824,8 @@ window.app = {
         matchmakingLabel.innerText = decision.matchLabel;
         keepNote.innerText = decision.keepNote;
         matchmakingNote.innerText = decision.matchNote;
+        trustTitle.innerText = decision.trustTitle || '先做決策，不先撮合付款';
+        trustBody.innerText = decision.trustBody || '平台目前只做試算、官方連結、缺口保存與媒合資訊，不處理第三方金流、代管或履約保證。';
 
         [officialBtn, keepBtn, matchmakingBtn].forEach(btn => btn?.classList.remove('primary'));
         if (decision.primary === 'keep') keepBtn.classList.add('primary');
@@ -800,13 +851,15 @@ window.app = {
             spendType: app.calcState.spendType,
             plannedSpend: app.calcState.amount,
             missingMiles,
-            summary: document.getElementById('best-summary-title')?.innerText || ''
+            summary: document.getElementById('best-summary-title')?.innerText || '',
+            decision: document.getElementById('decision-title')?.innerText || '',
+            trustNote: document.getElementById('trust-stage-title')?.innerText || ''
         };
         const key = 'pointExchangeTrackedGaps';
         const list = JSON.parse(localStorage.getItem(key) || '[]');
         list.unshift(record);
         localStorage.setItem(key, JSON.stringify(list.slice(0, 20)));
-        alert('已保存這次試算。之後 App 版可以把這筆資料用在缺口追蹤、價格提醒與媒合通知。');
+        showToast('缺口已保存！App 版將支援到期提醒與媒合通知', 'success', 4000);
     },
     
     updateCalculator: () => {
@@ -1018,11 +1071,7 @@ window.app = {
         });
         renderFeed();
         document.querySelector('.nav-item[data-target="view-home"]').click();
-        
-        // Use timeout to ensure view change completes before alert
-        setTimeout(() => {
-            alert(`已切到補點媒合頁，並篩選「${airlineName}」。請先確認轉讓規則與效期。`);
-        }, 100);
+        showToast(`已篩選「${airlineName}」，請先確認轉讓規則與效期`, 'info', 4000);
     }
 };
 
