@@ -319,8 +319,16 @@ const state = {
     pendingAirlineChip: null,     // stored chip element
 };
 
-// Initialization
-document.addEventListener('DOMContentLoaded', () => {
+// Initialization Function (called after user auth)
+function initMainApp() {
+    // Render the main app
+    const container = document.getElementById('app-container');
+    if (container.innerHTML === '') {
+        // Render the main app HTML here
+        // (keeping existing structure)
+        container.innerHTML = getMainAppHTML();
+    }
+
     initNavigation();
     renderFeed();
     renderChatList();
@@ -331,6 +339,15 @@ document.addEventListener('DOMContentLoaded', () => {
     app.updateCardPickerDisplay();
     app.updateRouteTarget();
     app.setPostType('buy');
+}
+
+// Called from auth.js when user is authenticated
+window.initMainApp = initMainApp;
+
+// DOMContentLoaded - don't initialize app yet, let auth.js handle it
+document.addEventListener('DOMContentLoaded', () => {
+    // Auth module will handle initialization
+    // Just waiting for Firebase to load...
 });
 
 // Navigation Logic

@@ -126,6 +126,15 @@ body {
     pointer-events: none;
 }
 
+/* Hide all views until app is authenticated */
+#app-container:not(.authenticated) .view {
+    display: none !important;
+}
+
+#app-container:not(.authenticated) .bottom-nav {
+    display: none !important;
+}
+
 .view.active {
     transform: translateX(0);
     opacity: 1;

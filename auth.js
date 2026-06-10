@@ -188,9 +188,16 @@ const authModule = {
   // 显示主应用
   showMainApp: function() {
     const container = document.getElementById('app-container');
-    container.innerHTML = '<div id="main-app"></div>';
-    // 主app会由其他脚本初始化
-    location.reload(); // 简单的方式重新加载app
+
+    // 添加authenticated类来显示views
+    container.classList.add('authenticated');
+
+    // 调用app的初始化函数
+    if (window.initMainApp) {
+      window.initMainApp();
+    } else {
+      console.error('initMainApp not found');
+    }
   }
 };
 
