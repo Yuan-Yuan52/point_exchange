@@ -1535,3 +1535,1069 @@ body {
 .safety-tips-list li.tip-ok   i { color: var(--primary-dark); }
 .safety-tips-list li.tip-warn i { color: #d97706; }
 .safety-tips-list li.tip-alert i { color: var(--danger); }
+
+/* =============================================
+   Investor Problem Fix Styles
+   ============================================= */
+
+/* Airline Chip - visually distinct to signal "different flow" */
+.filter-chip.airline-chip {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #92400e;
+    font-weight: 600;
+}
+.filter-chip.airline-chip.active {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: white;
+}
+
+/* Official Channels Panel (shown when airline filter active) */
+.legal-notice {
+    display: none;
+    margin: 0 1rem 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.75rem;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+}
+
+.legal-notice-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: #92400e;
+    margin-bottom: 0.35rem;
+}
+
+.legal-notice-body {
+    font-size: 0.77rem;
+    color: #78350f;
+    line-height: 1.5;
+    margin-bottom: 0.7rem;
+}
+
+.official-links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.official-link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.75rem;
+    background: white;
+    border: 1px solid #fde68a;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: #92400e;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background 0.15s ease;
+}
+.official-link-btn:hover { background: #fffbeb; }
+.official-link-btn i { opacity: 0.65; font-size: 0.85rem; }
+
+/* Post Form — Airline Block Warning */
+.airline-post-block {
+    padding: 0.85rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.6rem;
+    margin-top: 0.5rem;
+}
+.airline-post-block-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: #991b1b;
+    margin-bottom: 0.35rem;
+}
+.airline-post-block-body {
+    font-size: 0.77rem;
+    color: #7f1d1d;
+    line-height: 1.5;
+    margin-bottom: 0.65rem;
+}
+
+/* Premium Membership Card */
+.premium-card {
+    margin: 1rem;
+    padding: 1.1rem;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+.premium-card::after {
+    content: '';
+    position: absolute;
+    top: -22px;
+    right: -22px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    pointer-events: none;
+}
+.premium-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+}
+.premium-card h3 { font-size: 0.97rem; font-weight: 700; }
+.premium-soon-tag {
+    font-size: 0.6rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.08rem 0.4rem;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+}
+.premium-card p {
+    font-size: 0.75rem;
+    opacity: 0.85;
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+}
+.premium-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.75rem;
+}
+.premium-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+}
+.premium-feature i { color: #fbbf24; font-size: 0.9rem; }
+.btn-premium {
+    display: block;
+    width: 100%;
+    padding: 0.62rem;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+.btn-premium:active { background: rgba(255, 255, 255, 0.3); }
+
+/* Affiliate Revenue Entry */
+.affiliate-hint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 0.5rem;
+    margin-top: 0.45rem;
+    text-decoration: none;
+    color: #0369a1;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.affiliate-hint:hover { background: #e0f2fe; }
+.affiliate-hint i { opacity: 0.7; flex-shrink: 0; }
+
+/* =============================================
+   TripPlus-Inspired & P2P Matching Layer
+   ============================================= */
+
+/* Tag System (TripPlus-style info labels) */
+.card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.28rem;
+    margin-top: 0.55rem;
+}
+.card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.12rem 0.38rem;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+.card-tag.warn    { background: #fef3c7; color: #92400e; }
+.card-tag.info    { background: #dbeafe; color: #1e40af; }
+.card-tag.danger  { background: #fee2e2; color: #991b1b; }
+.card-tag.success { background: #dcfce7; color: #166534; }
+.card-tag.purple  { background: #ede9fe; color: #5b21b6; }
+.card-tag i { font-size: 0.6rem; }
+
+/* Gap Indicator (TripPlus-style 還差X哩 / 已達標) */
+.gap-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    margin-top: 0.3rem;
+}
+.gap-badge.ok {
+    background: #dcfce7;
+    color: #166534;
+}
+.gap-badge.missing {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+/* Airline P2P Disclaimer Strip on each card */
+.airline-disclaimer-strip {
+    margin-top: 0.55rem;
+    padding: 0.4rem 0.6rem;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 0.4rem;
+    font-size: 0.65rem;
+    color: #92400e;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.3rem;
+}
+.airline-disclaimer-strip i { flex-shrink: 0; margin-top: 0.05rem; font-size: 0.7rem; }
+
+/* Airline P2P Acknowledgment Modal */
+.ack-warning-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.6rem;
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #7f1d1d;
+}
+.ack-warning-box strong { color: #991b1b; }
+.ack-warning-box ul {
+    margin-top: 0.5rem;
+    padding-left: 0.25rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.ack-platform-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    padding: 0.65rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--primary);
+    margin-bottom: 0.75rem;
+}
+.ack-checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+.ack-checkbox-row input[type="checkbox"] {
+    flex-shrink: 0;
+    margin-top: 0.18rem;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Calculator — Enhanced Gap Display */
+.result-gap-display {
+    margin-top: 0.6rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 0.55rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+.result-gap-display.achieved {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+.result-gap-display.missing {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+}
+.result-gap-display i { font-size: 1rem; }
+
+/* =============================================
+   Comparison Table — "懶人一眼看完" 核心
+   ============================================= */
+
+.comparison-table-panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.9rem;
+}
+
+.comparison-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.comparison-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.4rem 0.6rem;
+    align-items: start;
+    padding: 0.65rem 0.4rem;
+    border-radius: 0.4rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+.comparison-row:last-child { border-bottom: none; }
+.comparison-row.best-value {
+    background: linear-gradient(135deg, #f4fae6 0%, #f9fffe 100%);
+    border: 1px solid rgba(141,182,0,0.25);
+    border-radius: 0.55rem;
+    margin: 0.2rem 0;
+}
+
+.comparison-program {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.comparison-target {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+}
+
+.comparison-gap-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.15rem 0.42rem;
+    border-radius: 999px;
+    margin-bottom: 0.25rem;
+}
+.comparison-gap-badge.ok   { background: #dcfce7; color: #166534; }
+.comparison-gap-badge.warn { background: #fff7ed; color: #c2410c; }
+
+.comparison-cost-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+}
+
+.cost-label { color: var(--text-muted); font-size: 0.62rem; }
+.cost-value { font-weight: 700; font-size: 0.72rem; color: var(--text-main); }
+.cost-value.p2p { color: var(--primary-dark); }
+.cost-saving {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #16a34a;
+    margin-top: 0.1rem;
+}
+
+.best-value-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.58rem;
+    font-weight: 700;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.08rem 0.3rem;
+    border-radius: 999px;
+    margin-top: 0.2rem;
+}
+
+.table-cta-btn {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.4rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+.table-cta-btn.match  { background: var(--primary); color: white; }
+.table-cta-btn.check  { background: #f1f5f9; color: var(--text-main); }
+
+/* Home Redesign — Feed-First Layout */
+.home-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem 0;
+}
+.home-eyebrow-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+.home-eyebrow-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+/* =============================================
+   Calc Result Bottom Sheet
+   ============================================= */
+
+.bottom-sheet-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 38;
+    display: none;
+    pointer-events: none;
+}
+.bottom-sheet-overlay.open {
+    display: block;
+    pointer-events: auto;
+    animation: overlay-fade-in 0.25s ease forwards;
+}
+
+@keyframes overlay-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 91%;
+    background: var(--bg-color);
+    border-radius: 1.25rem 1.25rem 0 0;
+    z-index: 39;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.18);
+}
+.bottom-sheet.open {
+    display: flex;
+    animation: sheet-slide-up 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes sheet-slide-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+@keyframes sheet-slide-down {
+    from { transform: translateY(0); }
+    to   { transform: translateY(100%); }
+}
+@keyframes overlay-fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+.bottom-sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin: 0.7rem auto 0;
+    flex-shrink: 0;
+}
+
+.bottom-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.bottom-sheet-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    padding-bottom: 2rem;
+}
+
+/* Card Showcase (Affiliate Comparison Panel) */
+.card-showcase {
+    border: 1px solid var(--border);
+    border-radius: 0.65rem;
+    overflow: hidden;
+    background: white;
+    margin-top: 0.5rem;
+}
+
+.card-showcase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0.75rem;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.card-showcase-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.4rem 0.5rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+.card-showcase-row:last-child { border-bottom: none; }
+.card-showcase-row:hover { background: #f8fafc; }
+.card-showcase-row.active { background: var(--primary-bg); }
+
+.card-showcase-name {
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+.card-showcase-row.active .card-showcase-name { color: var(--primary-dark); }
+
+.card-showcase-rate {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    white-space: nowrap;
+    text-align: right;
+}
+
+.card-apply-btn {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+.card-apply-btn:hover { background: var(--primary-dark); }
+
+/* Trip Type + Cabin Selector */
+.route-options {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.trip-type-toggle {
+    display: flex;
+    background: #f1f5f9;
+    padding: 2px;
+    border-radius: 0.4rem;
+    flex-shrink: 0;
+}
+
+.trip-type-btn {
+    padding: 0.38rem 0.6rem;
+    border: none;
+    background: none;
+    border-radius: 0.35rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+
+.trip-type-btn.active {
+    background: white;
+    color: var(--primary-dark);
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Picker Trigger Button */
+.card-picker-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: background 0.15s;
+}
+.card-picker-trigger:hover { background: #f8fafc; }
+
+.card-picker-left {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex: 1;
+}
+
+.card-picker-left > i {
+    font-size: 1.2rem;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.card-picker-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.card-picker-sub {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+}
+
+/* Card Showcase Toggle Button */
+.showcase-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+.showcase-toggle:hover { background: #f1f5f9; color: var(--text-main); }
+.showcase-toggle i { transition: transform 0.25s ease; font-size: 0.85rem; }
+.showcase-toggle.open i { transform: rotate(180deg); }
+.showcase-toggle.open { color: var(--primary-dark); border-color: rgba(141,182,0,0.4); background: var(--primary-bg); }
+
+/* Selected Card Detail Panel */
+.card-detail-panel {
+    padding: 0.65rem 0.75rem;
+    background: var(--primary-bg);
+    border: 1px solid rgba(141, 182, 0, 0.3);
+    border-radius: 0.65rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.card-detail-bonus {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    line-height: 1.35;
+}
+.card-detail-bonus i { flex-shrink: 0; margin-top: 0.05rem; font-size: 0.85rem; }
+
+.card-detail-promo {
+    font-size: 0.67rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    padding-left: 1.2rem;
+}
+
+.card-detail-apply {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.42rem 0.65rem;
+    background: white;
+    border: 1px solid rgba(141, 182, 0, 0.35);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--primary-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: background 0.15s;
+    margin-top: 0.15rem;
+}
+.card-detail-apply i { opacity: 0.65; font-size: 0.8rem; }
+
+/* Bonus Condition Checkbox */
+.condition-toggle-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.55rem 0.65rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+.condition-toggle-row:hover { background: #f8fafc; }
+
+.condition-toggle-row input[type="checkbox"] {
+    flex-shrink: 0;
+    margin-top: 0.22rem;
+    width: 15px;
+    height: 15px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.condition-toggle-content { flex: 1; }
+
+.condition-toggle-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.3;
+}
+
+.condition-toggle-note {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-top: 0.12rem;
+}
+
+/* Award Booking Button in Comparison Table */
+.award-book-btn {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.4rem;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(110, 143, 0, 0.3);
+    transition: box-shadow 0.15s;
+}
+.award-book-btn:hover { box-shadow: 0 3px 10px rgba(110, 143, 0, 0.4); }
+
+/* Notification Tracking Entry */
+.notif-track-entry {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.7rem 0.85rem;
+    margin: 0.5rem 0 0;
+    background: #f0f9ff;
+    border: 1px dashed #7dd3fc;
+    border-radius: 0.65rem;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: background 0.15s;
+}
+.notif-track-entry:hover { background: #e0f2fe; }
+
+.notif-track-left {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.notif-track-left > i {
+    font-size: 1.2rem;
+    color: #0284c7;
+    flex-shrink: 0;
+}
+
+.notif-track-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0369a1;
+    line-height: 1.3;
+}
+
+.notif-track-sub {
+    font-size: 0.65rem;
+    color: #7dd3fc;
+    margin-top: 0.1rem;
+    line-height: 1.3;
+}
+
+.notif-track-badge {
+    flex-shrink: 0;
+    font-size: 0.6rem;
+    font-weight: 700;
+    background: #0ea5e9;
+    color: white;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+}
+
+/* Calculate Submit Button */
+.calc-submit-btn {
+    margin-top: 1.25rem;
+    padding: 0.95rem 1rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* ============ PHASE 1-3: 新增样式 ============ */
+
+/* 3大意图按钮 */
+.intent-btn:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.intent-btn:active {
+    transform: scale(0.98);
+}
+
+/* 智能推荐面板 */
+#smart-matches-container {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-bottom: 2px solid #fcd34d;
+    padding: 0.75rem 1rem;
+}
+
+#smart-matches-container .match-card {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+#smart-matches-container .match-card:hover {
+    border-color: #fcd34d;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 信任指数样式 */
+.trust-score-badge {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.trust-score-badge:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.trust-score-high {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.trust-score-medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.trust-score-low {
+    background: #fee2e2;
+    color: #7f1d1d;
+}
+
+/* 验证徽章 */
+.verification-badges {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+}
+
+.verification-badge {
+    font-size: 0.8rem;
+    margin-left: 0.2rem;
+    cursor: help;
+}
+
+/* 成本分析部分 */
+.cost-analysis {
+    background: white;
+    border-radius: 6px;
+    padding: 0.5rem;
+}
+
+.cost-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.cost-item {
+    background: #fef3c7;
+    padding: 0.3rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.cost-item.points {
+    background: #dbeafe;
+}
+
+/* 快速计算器modal特定样式 */
+#quick-calc-modal .bottom-sheet-content {
+    padding: 1rem 1rem;
+}
+
+#quick-result {
+    background: #f0f9ff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: none;
+}
+
+#quick-result.show {
+    display: block;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 推荐卖家卡片 */
+.smart-match-card {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.smart-match-card:hover {
+    border-color: #fcd34d;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* 信任详情modal */
+#trust-modal {
+    display: none;
+}
+
+#trust-modal.open {
+    display: flex;
+    animation: sheet-slide-up 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.trust-score-display {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.trust-score-display.high {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.trust-score-display.medium {
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.trust-score-display.low {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* 价格参考表 */
+.price-reference {
+    background: #f5f5f5;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.price-table {
+    display: none;
+}
+
+.price-table.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+    }
+}

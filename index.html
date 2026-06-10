@@ -19,8 +19,8 @@
     <!-- App Container (Mobile Simulator on Desktop) -->
     <div id="app-container">
         
-        <!-- View: Home (Matchmaking Feed) -->
-        <div id="view-home" class="view">
+        <!-- View: Home (Matchmaking Feed) — PRIMARY LANDING -->
+        <div id="view-home" class="view active">
             <header class="app-header">
                 <div class="header-title">
                     <i class="ph ph-magnifying-glass text-primary"></i>
@@ -29,13 +29,6 @@
                 <button class="icon-button"><i class="ph ph-bell"></i></button>
             </header>
             <div class="view-content">
-                <div class="home-hero">
-                    <h3>台灣首個哩程點數媒合平台<span class="hero-beta-tag">Beta</span></h3>
-                    <p>先用試算確認缺口，再來這裡找可協助補足的用戶。平台只做媒合，雙方自行決定交易方式，不代管資金。</p>
-                    <div class="live-indicator mt-2">
-                        <span class="pulse-dot"></span>目前有活躍用戶在線
-                    </div>
-                </div>
                 <div class="market-stats-bar">
                     <div class="stat-pill">
                         <strong id="stat-active-listings">47</strong>
@@ -46,8 +39,40 @@
                         <span>本週媒合詢問</span>
                     </div>
                     <div class="stat-pill">
-                        <strong id="stat-avg-price">0.90 元</strong>
+                        <strong id="stat-avg-price">0.73 元</strong>
                         <span>平均點均價</span>
+                    </div>
+                </div>
+
+                <!-- 價格參考表：讓用戶立即看到不同點數的真實交易價 -->
+                <div style="background: #f5f5f5; padding: 0.75rem 1rem; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+                    <button style="width: 100%; background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: #333;" onclick="this.parentElement.querySelector('.price-table').style.display = this.parentElement.querySelector('.price-table').style.display === 'none' ? 'block' : 'none'; this.querySelector('i').style.transform = this.parentElement.querySelector('.price-table').style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';">
+                        <span>💰 P2P 點數費率參考</span>
+                        <i class="ph ph-caret-down" style="transition: 0.2s;"></i>
+                    </button>
+                    <div class="price-table" style="display: none; margin-top: 0.5rem; font-size: 0.8rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <!-- 點數 -->
+                            <div style="background: white; padding: 0.5rem; border-radius: 4px;">
+                                <div style="color: #666; margin-bottom: 0.3rem;">點數</div>
+                                <div style="font-weight: 600; color: #d97706;">Open Points</div>
+                                <div style="color: #999; font-size: 0.75rem;">約 0.75元/點</div>
+                            </div>
+                            <div style="background: white; padding: 0.5rem; border-radius: 4px;">
+                                <div style="color: #666; margin-bottom: 0.3rem;">點數</div>
+                                <div style="font-weight: 600; color: #d97706;">Line Points</div>
+                                <div style="color: #999; font-size: 0.75rem;">約 0.70元/點</div>
+                            </div>
+                            <!-- 里程 -->
+                            <div style="background: white; padding: 0.5rem; border-radius: 4px; grid-column: 1/-1;">
+                                <div style="color: #666; margin-bottom: 0.3rem;">✈ 航空里程</div>
+                                <div style="font-weight: 600; color: #0891b2;">長榮・華航・國泰</div>
+                                <div style="color: #999; font-size: 0.75rem;">約 0.45元/里 (雙方T&C自行確認)</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid #eee; color: #999; font-size: 0.75rem;">
+                            💡 實際價格取決於點數類型、效期、成交量等因素
+                        </div>
                     </div>
                 </div>
                 <!-- Segment Control / Tab -->
@@ -67,20 +92,48 @@
                 </div>
                 <div class="filter-bar" style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
                     <button class="filter-chip active" onclick="app.filterType(event, '全部')">全部</button>
-                    <button class="filter-chip" onclick="app.filterType(event, '長榮哩程')">長榮哩程</button>
-                    <button class="filter-chip" onclick="app.filterType(event, '華航哩程')">華航哩程</button>
-                    <button class="filter-chip" onclick="app.filterType(event, '亞洲萬里通')">亞洲萬里通</button>
                     <button class="filter-chip" onclick="app.filterType(event, 'Open Points')">Open Points</button>
                     <button class="filter-chip" onclick="app.filterType(event, '全聯福利點')">全聯福利點</button>
                     <button class="filter-chip" onclick="app.filterType(event, 'Line Points')">Line Points</button>
+                    <button class="filter-chip" onclick="app.filterType(event, 'Happy GO')">Happy GO</button>
+                    <button class="filter-chip airline-chip" onclick="app.filterType(event, '長榮哩程')">✈ 長榮補哩</button>
+                    <button class="filter-chip airline-chip" onclick="app.filterType(event, '華航哩程')">✈ 華航補哩</button>
+                    <button class="filter-chip airline-chip" onclick="app.filterType(event, '亞洲萬里通')">✈ 國泰補哩</button>
                 </div>
                 <div class="p-3 bg-white border-b border-gray-200">
                     <button class="match-cta-btn" onclick="app.openAutoMatch()">
                         <i class="ph ph-magic-wand"></i>依缺口尋找點數
                     </button>
                 </div>
+
+                <!-- Phase 2: 智能推荐媒合者面板 -->
+                <div id="smart-matches-container" style="display: none;">
+                    <!-- Populated by JS -->
+                </div>
+
                 <div class="feed-list" id="feed-list">
                     <!-- Feed items injected via JS -->
+                </div>
+
+                <!-- Official Airline Top-up Channels (shown when airline chip active) -->
+                <div id="official-channels-section" class="legal-notice">
+                    <div class="legal-notice-header">
+                        <i class="ph-fill ph-warning-circle"></i>航空哩程：僅提供官方補哩管道
+                    </div>
+                    <div class="legal-notice-body">
+                        各大航空公司明確禁止哩程私下轉讓或買賣，違者面臨帳戶凍結與哩程沒收。平台不媒合航空哩程買賣，以下為各航空官方補哩入口。
+                    </div>
+                    <div class="official-links-list">
+                        <a class="official-link-btn" href="https://www.evaair.com/zh-tw/infinity-mileagelands/mileage-award-program/purchase-miles/" target="_blank" rel="noopener">
+                            <span>長榮航空官方購買哩程</span><i class="ph ph-arrow-square-out"></i>
+                        </a>
+                        <a class="official-link-btn" href="https://www.china-airlines.com/tw/zh/member/airline-miles/purchased-miles" target="_blank" rel="noopener">
+                            <span>華航官方購買哩程</span><i class="ph ph-arrow-square-out"></i>
+                        </a>
+                        <a class="official-link-btn" href="https://www.asiamiles.com/en/account/manage-miles/top-up-miles.html/1000" target="_blank" rel="noopener">
+                            <span>亞洲萬里通 Top-up Miles</span><i class="ph ph-arrow-square-out"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,15 +159,27 @@
                     <div class="form-group">
                         <label>點數種類</label>
                         <select id="post-type" class="form-input" onchange="app.updateRecommendedPrice()">
-                            <option value="長榮哩程">長榮航空哩程 (EVA Air)</option>
-                            <option value="華航哩程">中華航空哩程 (China Airlines)</option>
-                            <option value="亞洲萬里通">國泰亞洲萬里通 (Asia Miles)</option>
-                            <option value="Open Points">Open Points</option>
-                            <option value="全聯福利點">全聯福利點</option>
-                            <option value="Line Points">Line Points</option>
+                            <optgroup label="── 零售點數（可媒合）──">
+                                <option value="Open Points">Open Points（全聯）</option>
+                                <option value="全聯福利點">全聯福利點</option>
+                                <option value="Line Points">Line Points</option>
+                                <option value="Happy GO">Happy GO（遠東百貨）</option>
+                            </optgroup>
+                            <optgroup label="── 航空哩程（雙方自行確認 T&C）──" id="airline-optgroup">
+                                <option value="長榮哩程">長榮哩程（注意 T&C 限制）</option>
+                                <option value="華航哩程">華航哩程（注意 T&C 限制）</option>
+                                <option value="亞洲萬里通">亞洲萬里通（注意 T&C 限制）</option>
+                            </optgroup>
                         </select>
-                        <div id="airline-warning" class="mt-2 p-2 bg-red-50 text-danger text-xs rounded hidden border border-red-200">
-                            航空哩程與點數常有轉讓限制，請先確認平台規則、效期與是否可合併使用。本 prototype 只提供媒合，不處理付款或資金代管。
+                        <!-- Airline Block Notice -->
+                        <div id="airline-post-block" class="airline-post-block hidden">
+                            <div class="airline-post-block-title">
+                                <i class="ph-fill ph-x-circle"></i>航空哩程無法在平台媒合買賣
+                            </div>
+                            <div class="airline-post-block-body">
+                                各大航空公司明確禁止哩程商業轉讓，違者帳戶將被凍結。請前往試算工具使用官方補哩管道。
+                            </div>
+                            <button class="btn-primary w-full text-sm" style="padding:0.6rem" onclick="document.querySelector('.nav-item[data-target=\'view-calculator\']').click()">前往官方補哩管道</button>
                         </div>
                     </div>
 
@@ -176,20 +241,76 @@
             </div>
         </div>
 
-        <!-- View: Calculator (SmartMile) -->
-        <div id="view-calculator" class="view active">
+        <!-- Quick Calculator Modal (Phase 1) -->
+        <div id="quick-calc-overlay" class="bottom-sheet-overlay" onclick="app.closeQuickCalculator()"></div>
+        <div id="quick-calc-modal" class="bottom-sheet">
+            <div class="bottom-sheet-handle"></div>
+            <div class="bottom-sheet-header">
+                <button class="icon-button" onclick="app.closeQuickCalculator()">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <span class="font-bold" style="font-size:1rem">3步快速試算缺口</span>
+                <div style="width:40px"></div>
+            </div>
+            <div class="bottom-sheet-content">
+                <div style="padding: 1rem 0;">
+                    <div class="compact-field">
+                        <label>選擇航線</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <select id="quick-route-from" class="form-input" style="grid-column: 1;">
+                                <option value="TPE">台北 TPE</option>
+                                <option value="KHH">高雄 KHH</option>
+                            </select>
+                            <select id="quick-route-to" class="form-input" style="grid-column: 2;">
+                                <option value="TYO">東京</option>
+                                <option value="LAX">洛杉磯</option>
+                                <option value="NYC">紐約</option>
+                                <option value="BKK">曼谷</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="compact-field">
+                        <label>艙等</label>
+                        <select id="quick-cabin" class="form-input">
+                            <option value="economy">經濟艙</option>
+                            <option value="business">商務艙</option>
+                            <option value="first">頭等艙</option>
+                        </select>
+                    </div>
+
+                    <div class="compact-field">
+                        <label>已有哩程</label>
+                        <input type="number" id="quick-current-miles" class="form-input" min="0" placeholder="0" value="0" />
+                    </div>
+
+                    <div id="quick-result" style="background: #f0f9ff; border-radius: 8px; padding: 1rem; margin-top: 1rem; display: none;">
+                        <div style="font-size: 0.85rem; color: #666; margin-bottom: 0.3rem;">你還缺</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0284c7; margin-bottom: 1rem;">
+                            <span id="quick-missing-miles">0</span> 里程
+                        </div>
+                        <div style="font-size: 0.8rem; color: #666;">
+                            💰 大约需要 NT$<span id="quick-missing-cost">0</span> (P2P市价 0.45元/里)
+                        </div>
+                    </div>
+
+                    <button class="btn-primary w-full" style="margin-top: 1rem;" onclick="app.quickCalcResult()">
+                        計算缺口
+                    </button>
+
+                    <button class="btn-secondary w-full" style="margin-top: 0.5rem;" onclick="app.quickPostToFeed()">
+                        發布需求・找媒合者
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Calculator (SmartMile) — Secondary -->
+        <div id="view-calculator" class="view">
             <header class="app-header">
                 <div class="header-title">哩程缺口試算 <span class="version-badge">Beta</span></div>
             </header>
             <div class="view-content p-4 simple-calculator">
-                <section class="simple-hero">
-                    <div>
-                        <div class="text-xs text-primary-dark font-bold mb-1">不用登入，立即試算</div>
-                        <h2>哩程缺口一鍵診斷</h2>
-                        <p>輸入持有哩程與預計消費，立刻比較各航線兌換門檻差距，並獲得最佳補點路徑建議。</p>
-                    </div>
-                </section>
-
                 <section class="simple-panel">
                     <div class="compact-field">
                         <label for="route-to">航線</label>
@@ -210,6 +331,18 @@
                                 <option value="PAR">巴黎 PAR</option>
                             </select>
                         </div>
+                        <div class="route-options">
+                            <div class="trip-type-toggle">
+                                <button class="trip-type-btn active" type="button" onclick="app.setTripType('rt', this)">來回</button>
+                                <button class="trip-type-btn" type="button" onclick="app.setTripType('ow', this)">單趟</button>
+                            </div>
+                            <select id="route-cabin" class="form-input" style="flex:1" onchange="app.setCabin(this.value)">
+                                <option value="economy">經濟艙</option>
+                                <option value="premium">豪華經濟艙</option>
+                                <option value="business">商務艙</option>
+                                <option value="first">頭等艙</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="compact-grid">
@@ -226,34 +359,31 @@
                     <input type="range" id="calc-spend-slider" class="styled-slider w-full" min="0" max="2000000" step="10000" value="100000" oninput="app.updateCalculator()" aria-label="預計消費金額">
                     <div class="simple-spend">目前以 NT$ <span id="calc-spend-display">100,000</span> 試算</div>
 
-                    <div class="compact-field">
-                        <label for="calc-card">信用卡</label>
-                        <select id="calc-card" class="form-input" onchange="app.setCalcCard(this.value)">
-                            <option value="dbs_world">星展飛行世界商務卡</option>
-                            <option value="hsbc_light">滙豐旅人輕旅卡</option>
-                            <option value="hsbc_infinite">滙豐旅人無限卡</option>
-                            <option value="ctbc_ci_ding">中信華航鼎尊無限卡</option>
-                            <option value="ctbc_ci_bright">中信華航璀璨無限卡</option>
-                            <option value="ctbc_ci_business">中信華航商務御璽卡</option>
-                            <option value="cathay_eva_bonus">國泰世華長榮航空聯名卡</option>
-                        </select>
-                    </div>
-
-                    <div class="cube-entry">
-                        <div>
-                            <strong>小樹點不是固定哩程卡</strong>
-                            <span>CUBE 會依等級、權益方案與通路改變回饋，不直接放進哩程卡排名。</span>
+                    <!-- 自動追蹤入口 -->
+                    <button class="notif-track-entry" type="button" onclick="app.showNotifTrackComingSoon()">
+                        <div class="notif-track-left">
+                            <i class="ph-fill ph-bell-ringing"></i>
+                            <div>
+                                <div class="notif-track-title">自動偵測信用卡扣款通知</div>
+                                <div class="notif-track-sub">授權後自動累計消費，即時更新哩程缺口</div>
+                            </div>
                         </div>
-                        <button type="button" onclick="app.setCalcCard('cube_info')">改看小樹點估算</button>
-                    </div>
+                        <span class="notif-track-badge">即將推出</span>
+                    </button>
 
+                    <!-- 信用卡選擇入口（點擊開啟 bottom sheet） -->
                     <div class="compact-field">
-                        <label for="calc-spend-type">消費情境</label>
-                        <select id="calc-spend-type" class="form-input" onchange="app.setSpendType(this.value)">
-                            <option value="domestic">國內一般消費</option>
-                            <option value="overseas">海外一般消費</option>
-                            <option value="bonus">指定加碼/活動條件</option>
-                        </select>
+                        <label>信用卡</label>
+                        <button type="button" class="card-picker-trigger" onclick="app.openCardSheet()">
+                            <div class="card-picker-left">
+                                <i class="ph-fill ph-credit-card"></i>
+                                <div>
+                                    <div class="card-picker-name" id="card-picker-name">星展飛行世界商務卡</div>
+                                    <div class="card-picker-sub" id="card-picker-sub">國內一般消費・點擊調整</div>
+                                </div>
+                            </div>
+                            <i class="ph ph-caret-right text-muted"></i>
+                        </button>
                     </div>
 
                     <div id="cube-points-panel" class="cube-points-panel hidden">
@@ -264,27 +394,150 @@
                     </div>
                 </section>
 
+                <!-- 成本對比分析：補點vs補里程需要花多少錢 -->
+                <div style="background: #fafafa; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <button style="width: 100%; background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: #333;" onclick="this.parentElement.querySelector('.cost-analysis').style.display = this.parentElement.querySelector('.cost-analysis').style.display === 'none' ? 'block' : 'none'; this.querySelector('i').style.transform = this.parentElement.querySelector('.cost-analysis').style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';">
+                        <span>💳 補點成本對比分析</span>
+                        <i class="ph ph-caret-down" style="transition: 0.2s;"></i>
+                    </button>
+                    <div class="cost-analysis" style="display: none; margin-top: 0.5rem; font-size: 0.85rem;">
+                        <div id="cost-analysis-content" style="color: #666;">
+                            <!-- Populated by JS when user makes selections -->
+                            <p style="margin: 0; text-align: center; padding: 0.5rem 0; color: #999;">👉 完成上方設定後顯示成本分析</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 確定計算按鈕 -->
+                <button class="btn-primary w-full calc-submit-btn" onclick="app.calculate()">
+                    <i class="ph ph-calculator"></i> 確定計算
+                </button>
+            </div>
+        </div>
+
+        <!-- Card Picker Sheet: Overlay -->
+        <div id="card-sheet-overlay" class="bottom-sheet-overlay" onclick="app.closeCardSheet()"></div>
+
+        <!-- Card Picker Sheet -->
+        <div id="card-sheet" class="bottom-sheet">
+            <div class="bottom-sheet-handle"></div>
+            <div class="bottom-sheet-header">
+                <button class="icon-button" onclick="app.closeCardSheet()">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <span class="font-bold" style="font-size:1rem">信用卡與消費情境</span>
+                <button class="icon-button text-primary" onclick="app.closeCardSheet()" style="font-size:0.85rem;font-weight:700;width:auto;padding:0 0.5rem">完成</button>
+            </div>
+            <div class="bottom-sheet-content">
+
+                <div class="compact-field">
+                    <label for="calc-card">選擇信用卡</label>
+                    <select id="calc-card" class="form-input" onchange="app.setCalcCard(this.value)">
+                        <option value="dbs_world">星展飛行世界商務卡</option>
+                        <option value="hsbc_light">滙豐旅人輕旅卡</option>
+                        <option value="hsbc_infinite">滙豐旅人無限卡</option>
+                        <option value="ctbc_ci_ding">中信華航鼎尊無限卡</option>
+                        <option value="ctbc_ci_bright">中信華航璀璨無限卡</option>
+                        <option value="ctbc_ci_business">中信華航商務御璽卡</option>
+                        <option value="cathay_eva_bonus">國泰世華長榮航空聯名卡</option>
+                        <option value="cube_info">國泰世華 CUBE 卡（小樹點）</option>
+                    </select>
+
+                    <!-- 選中卡片的優惠說明 + 申辦連結 -->
+                    <div id="card-detail-panel" class="card-detail-panel">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- 加碼條件勾選 -->
+                    <label class="condition-toggle-row" id="bonus-condition-row">
+                        <input type="checkbox" id="chk-bonus-promo" onchange="app.toggleBonusPromo(this.checked)">
+                        <div class="condition-toggle-content">
+                            <div class="condition-toggle-label" id="bonus-condition-label">已符合指定加碼條件</div>
+                            <div class="condition-toggle-note" id="bonus-condition-note">勾選後採用該卡加碼率試算</div>
+                        </div>
+                    </label>
+
+                    <!-- 各卡比較 (聯盟行銷) -->
+                    <button class="showcase-toggle" onclick="app.toggleCardShowcase(this)" type="button">
+                        <span>比較所有信用卡哩程效率</span>
+                        <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div id="card-showcase" class="card-showcase" style="display:none">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="compact-field" style="margin-top:1rem">
+                    <label for="calc-spend-type">消費情境</label>
+                    <select id="calc-spend-type" class="form-input" onchange="app.setSpendType(this.value)">
+                        <option value="domestic">國內一般消費</option>
+                        <option value="overseas">海外一般消費</option>
+                        <option value="bonus">指定加碼/活動條件</option>
+                    </select>
+                </div>
+
+                <button class="btn-primary w-full" style="margin-top:1.5rem" onclick="app.closeCardSheet()">完成設定</button>
+            </div>
+        </div>
+
+        <!-- Phase 3: 用户信任详情 Modal -->
+        <div id="trust-modal-overlay" class="bottom-sheet-overlay" onclick="app.closeTrustModal()"></div>
+        <div id="trust-modal" class="bottom-sheet" style="display: none;">
+            <div class="bottom-sheet-handle"></div>
+            <div class="bottom-sheet-header">
+                <button class="icon-button" onclick="app.closeTrustModal()">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <span class="font-bold" style="font-size:1rem">信任指數詳情</span>
+                <div style="width:40px"></div>
+            </div>
+            <div class="bottom-sheet-content">
+                <div id="trust-detail-content">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Calc Result Sheet: Overlay -->
+        <div id="calc-result-overlay" class="bottom-sheet-overlay" onclick="app.closeCalcResult()"></div>
+
+        <!-- Calc Result Sheet: 結果彈出視窗 -->
+        <div id="calc-result-sheet" class="bottom-sheet">
+            <div class="bottom-sheet-handle"></div>
+            <div class="bottom-sheet-header">
+                <button class="icon-button" onclick="app.closeCalcResult()">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <span class="font-bold" style="font-size:1rem">試算結果</span>
+                <div style="width:40px"></div>
+            </div>
+            <div class="bottom-sheet-content simple-calculator">
+
                 <section class="result-panel">
-                    <div class="text-xs text-primary-dark font-bold mb-1">試算結果</div>
                     <h2 id="best-summary-title">請輸入條件</h2>
                     <div class="decision-box">
-                        <span id="decision-kicker">建議下一步</span>
+                        <span id="decision-kicker" class="hidden"></span>
                         <strong id="decision-title">先完成試算</strong>
-                        <p id="decision-reason">輸入目前持有哩程與預計消費後，系統會依缺口大小排序補點路徑。</p>
+                        <p id="decision-reason" class="hidden"></p>
                     </div>
                     <div class="result-metrics">
+                        <div><span>本次累積</span><strong id="best-earned">0</strong></div>
+                        <div><span>合計可用</span><strong id="best-total">0</strong></div>
+                        <div><span>還需消費</span><strong id="best-missing">0</strong></div>
+                    </div>
+                </section>
+
+                <!-- 各計畫費用一覽：核心資訊 -->
+                <section class="comparison-table-panel">
+                    <div class="comparison-table-header">
                         <div>
-                            <span>本次累積</span>
-                            <strong id="best-earned">0</strong>
+                            <div class="text-xs font-bold text-primary-dark">各計畫費用一覽</div>
+                            <div class="text-xs text-gray" id="comp-route-label">請先選擇航線與輸入條件</div>
                         </div>
-                        <div>
-                            <span>合計可用</span>
-                            <strong id="best-total">0</strong>
-                        </div>
-                        <div>
-                            <span>還需消費</span>
-                            <strong id="best-missing">0</strong>
-                        </div>
+                        <div class="text-xs text-gray" style="text-align:right;line-height:1.4;">含官方補哩<br>及媒合均價</div>
+                    </div>
+                    <div id="comparison-table">
+                        <div class="text-center text-gray text-sm p-3">計算後此處顯示各計畫成本對比。</div>
                     </div>
                 </section>
 
@@ -293,47 +546,22 @@
                         <i class="ph ph-bank"></i>
                         <span>官方補哩</span>
                         <em id="official-action-label">建議優先</em>
-                        <small id="official-topup-note">前往航空公司或銀行官方入口</small>
+                        <small id="official-topup-note" class="hidden"></small>
                     </a>
                     <button class="action-button" type="button" id="keep-earning-entry" onclick="app.trackCurrentGap()">
                         <i class="ph ph-credit-card"></i>
                         <span>繼續刷卡累積</span>
                         <em id="keep-earning-label">次選</em>
-                        <small id="keep-earning-note">保存缺口，之後用 App 追蹤</small>
+                        <small id="keep-earning-note" class="hidden"></small>
                     </button>
                     <button class="action-button" type="button" id="matchmaking-entry-btn" onclick="app.jumpToMatchmaking('長榮哩程')">
                         <i class="ph ph-users-three"></i>
                         <span>媒合找點數</span>
                         <em id="matchmaking-action-label">保留方案</em>
-                        <small id="matchmaking-note">缺口大時再找市場供給</small>
+                        <small id="matchmaking-note" class="hidden"></small>
                     </button>
                 </section>
 
-                <section class="trust-panel">
-                    <div class="trust-item">
-                        <i class="ph ph-shield-check"></i>
-                        <div>
-                            <strong id="trust-stage-title">先做決策，不先撮合付款</strong>
-                            <span id="trust-stage-body">平台目前只做試算、官方連結、缺口保存與媒合資訊，不處理第三方金流、代管或履約保證。</span>
-                        </div>
-                    </div>
-                    <div class="trust-grid">
-                        <div>
-                            <span>資訊查核</span>
-                            <strong>每月更新</strong>
-                        </div>
-                        <div>
-                            <span>評價系統</span>
-                            <strong>雙向評分</strong>
-                        </div>
-                        <div>
-                            <span>媒合模式</span>
-                            <strong>不代管金流</strong>
-                        </div>
-                    </div>
-                </section>
-
-                <button class="quiet-link" type="button" onclick="app.showAppComingSoon()">追蹤這個缺口</button>
 
                 <details class="advanced-details">
                     <summary>進階明細與官方資料</summary>
@@ -345,18 +573,15 @@
                             <span>國泰: <span id="route-info-cx" class="font-bold">20,000</span> 哩</span>
                         </div>
                     </div>
-
                     <div class="simple-info-box">
                         <div class="font-bold mb-1">目前千元效率</div>
                         <div><span id="calc-efficiency">50</span> <span id="calc-efficiency-unit">哩 / 千元</span></div>
                     </div>
-
                     <div class="simple-info-box">
                         <div class="font-bold mb-1" id="card-info-title">官方資料提醒</div>
                         <div class="text-gray leading-relaxed" id="card-info-notes">載入中...</div>
                         <div class="text-xs text-gray mt-2">最後查核：<span id="card-info-updated">2026-05-20</span> ｜ <a id="card-info-source" href="#" target="_blank" rel="noopener">銀行官方來源</a></div>
                     </div>
-
                     <div id="airlines-container" class="simple-airline-list">
                         <div class="airline-row">
                             <div><strong>長榮</strong><span>目標 <span id="label-target-eva">35,000</span> 哩</span></div>
@@ -380,13 +605,9 @@
                             <button class="btn-cta hidden mt-2 w-full text-xs" id="cx-cta" onclick="app.jumpToMatchmaking('亞洲萬里通')">依缺口尋找亞洲萬里通</button>
                         </div>
                     </div>
-
                     <div class="simple-info-box">
                         <div class="font-bold mb-1">判斷說明</div>
                         <p id="ai-diagnosis">載入中...</p>
-                    </div>
-                    <div class="simple-warning">
-                        信用卡回饋會受卡等、MCC、登錄、月/年上限與活動期間影響，實際仍以銀行最新公告為準。媒合功能上線前，必須先補身份驗證、點數可轉讓檢核、黑名單/評價與履約紀錄，否則不應導入金流或手續費。
                     </div>
                 </details>
                 <div style="height:20px;"></div>
@@ -409,7 +630,23 @@
                     </div>
                 </div>
                 
-                <div class="card mt-4 mx-4">
+                <!-- Premium Membership Card -->
+                <div class="premium-card">
+                    <div class="premium-card-header">
+                        <h3>✈ Premium 會員</h3>
+                        <span class="premium-soon-tag">即將推出</span>
+                    </div>
+                    <p>解鎖進階功能，提升媒合成交機率，享有專屬客服與優先曝光排名。</p>
+                    <div class="premium-features">
+                        <div class="premium-feature"><i class="ph-fill ph-seal-check"></i><span>已驗證會員徽章，提升買家信任</span></div>
+                        <div class="premium-feature"><i class="ph-fill ph-bell-ringing"></i><span>點數到期前 30/7/1 天自動提醒</span></div>
+                        <div class="premium-feature"><i class="ph-fill ph-lightning"></i><span>媒合詢問優先排列在頁面頂部</span></div>
+                        <div class="premium-feature"><i class="ph-fill ph-chart-line-up"></i><span>各點數市場均價走勢追蹤</span></div>
+                    </div>
+                    <button class="btn-premium" onclick="showToast('Premium 方案即將推出，敬請期待！', 'info', 3500)">了解 Premium 方案 →</button>
+                </div>
+
+                <div class="card mt-0 mx-4">
                     <h3 class="font-bold mb-3">最近獲得的評價</h3>
                     <div class="review-list" id="review-list">
                         <!-- Reviews injected via JS -->
@@ -450,13 +687,12 @@
                 <div class="form-group">
                     <label>我想要找</label>
                     <select id="match-type" class="form-input">
-                        <option value="長榮哩程">長榮航空哩程 (EVA Air)</option>
-                        <option value="華航哩程">中華航空哩程 (China Airlines)</option>
-                        <option value="亞洲萬里通">國泰亞洲萬里通 (Asia Miles)</option>
-                        <option value="Open Points">Open Points</option>
+                        <option value="Open Points">Open Points（全聯）</option>
                         <option value="全聯福利點">全聯福利點</option>
                         <option value="Line Points">Line Points</option>
+                        <option value="Happy GO">Happy GO（遠東百貨）</option>
                     </select>
+                    <div class="mt-2 text-xs text-gray">✈ 航空哩程請使用試算工具內的官方補哩管道</div>
                 </div>
                 <div class="form-group">
                     <label>數量</label>
@@ -488,6 +724,35 @@
             </div>
         </div>
 
+        <!-- Airline P2P Acknowledgment Modal -->
+        <div id="airline-ack-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <h3 class="font-bold mb-3 flex items-center gap-2">
+                    <i class="ph ph-warning text-warning" style="font-size:1.3rem"></i>
+                    瀏覽航空哩程媒合前，請確認
+                </h3>
+                <div class="ack-warning-box">
+                    <strong>各大航空公司明確禁止哩程商業轉讓或買賣。</strong><br>違規者可能面臨：
+                    <ul>
+                        <li>🚫 帳戶凍結或永久封鎖</li>
+                        <li>🚫 所有累積哩程全數沒收</li>
+                        <li>🚫 法律或民事責任追究</li>
+                    </ul>
+                </div>
+                <div class="ack-platform-note">
+                    <strong>本平台聲明：</strong>此頁面僅為資訊媒合，平台<u>不鼓勵、不建議</u>任何違反航空公司條款的行為，不介入任何付款，不代管資金，不提供履約保證。哩程轉讓之法律風險由雙方自行評估及承擔。
+                </div>
+                <label class="ack-checkbox-row">
+                    <input type="checkbox" id="ack-checkbox" onchange="document.getElementById('ack-confirm-btn').disabled = !this.checked">
+                    <span>我已閱讀並了解上述聲明，風險由本人自行承擔，與平台無關</span>
+                </label>
+                <div class="flex gap-2">
+                    <button class="btn-secondary w-full" onclick="app.closeAckModal()">取消</button>
+                    <button class="btn-primary w-full" id="ack-confirm-btn" onclick="app.confirmAck()" disabled>我已了解，繼續瀏覽</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Toast Notification Container -->
         <div id="toast-container" class="toast-container"></div>
 
@@ -512,19 +777,19 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation -->
+        <!-- Bottom Navigation — 媒合為主要入口 -->
         <nav class="bottom-nav">
-            <button class="nav-item active" data-target="view-calculator">
-                <i class="ph ph-calculator"></i>
-                <span>試算</span>
-            </button>
-            <button class="nav-item" data-target="view-home">
-                <i class="ph ph-magnifying-glass"></i>
+            <button class="nav-item active" data-target="view-home">
+                <i class="ph-fill ph-users-three"></i>
                 <span>媒合</span>
             </button>
             <button class="nav-item" data-target="view-post">
                 <i class="ph ph-plus-circle"></i>
                 <span>發布</span>
+            </button>
+            <button class="nav-item" data-target="view-calculator">
+                <i class="ph ph-calculator"></i>
+                <span>試算</span>
             </button>
             <button class="nav-item" data-target="view-chat">
                 <i class="ph ph-chat-circle-dots"></i>
