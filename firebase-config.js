@@ -9,11 +9,38 @@ const firebaseConfig = {
   measurementId: "G-25NKQKEJ41"
 };
 
-// Initialize Firebase
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const firebaseAuth = firebase.auth();
-const firebaseDB = firebase.firestore();
+// Wait for Firebase to load, then initialize
+function initFirebase() {
+  if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+    try {
+      const firebaseApp = firebase.initializeApp(firebaseConfig);
+      window.firebaseAuth = firebase.auth();
+      window.firebaseDB = firebase.firestore();
+      console.log('✅ Firebase initialized');
+      return true;
+    } catch (error) {
+      console.error('Firebase init error:', error);
+      return false;
+    }
+  } else if (firebase.apps.length > 0) {
+    window.firebaseAuth = firebase.auth();
+    window.firebaseDB = firebase.firestore();
+    console.log('✅ Firebase already initialized');
+    return true;
+  }
+  return false;
+}
 
-// Export for use in app
-window.firebaseAuth = firebaseAuth;
-window.firebaseDB = firebaseDB;
+// Try to initialize immediately, or wait for Firebase SDK
+if (typeof firebase === 'undefined') {
+  // Firebase SDK not loaded yet, wait for it
+  const waitForFirebase = setInterval(() => {
+    if (typeof firebase !== 'undefined') {
+      clearInterval(waitForFirebase);
+      initFirebase();
+    }
+  }, 100);
+} else {
+  // Firebase SDK already loaded
+  initFirebase();
+}

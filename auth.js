@@ -201,13 +201,18 @@ const authModule = {
   }
 };
 
-// 初始化认证
+// 初始化认证 - 等待Firebase和DOM准备
+function initAuth() {
+  if (window.firebaseAuth && authModule) {
+    console.log('✅ Auth module initialized');
+    authModule.init();
+  } else {
+    console.log('⏳ Waiting for Firebase...');
+    setTimeout(initAuth, 500);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  // 等待Firebase加载
-  const checkFirebase = setInterval(() => {
-    if (typeof firebase !== 'undefined' && window.firebaseAuth) {
-      clearInterval(checkFirebase);
-      authModule.init();
-    }
-  }, 100);
+  console.log('📄 DOM loaded, initializing auth...');
+  initAuth();
 });
