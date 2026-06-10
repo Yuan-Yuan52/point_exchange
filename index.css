@@ -90,25 +90,23 @@ body {
 .transition-transform { transition: transform 0.15s ease; }
 .active\:scale-95:active { transform: scale(0.95); }
 
-/* Mobile App Simulator Container */
+/* Full-screen Web App Container */
 #app-container {
     width: 100%;
-    max-width: 480px;
     height: 100vh;
-    max-height: 100vh; /* Actually bounded on desktop for preview */
     background-color: var(--bg-color);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
 }
 
+/* No mobile phone frame on desktop - full screen web experience */
 @media (min-width: 481px) {
     #app-container {
-        height: 850px;
-        border-radius: 40px;
-        border: 12px solid #000;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
     }
 }
 

@@ -74,35 +74,18 @@ function getTrustBadges(userId) {
 // 點數價格：一般互換價格 (不是官方定價，是P2P市場價)
 // 里程價格：當前P2P轉讓市價約 0.45元/里
 const mockFeed = [
-    // === 零售點數媒合 ===
-    { id: 1, user: '王小明', avatar: '王', type: 'Open Points',  pointAmount: 500,  cashOffer: 375,  note: '還差 500 點兌換折抵，希望找可轉讓點數（0.75元/點）。',      rating: 4.8, postType: 'buy'  },
-    { id: 2, user: '李美美', avatar: '李', type: '全聯福利點',   pointAmount: 1200, cashOffer: 900, note: '想補足購物折抵缺口，可先聊轉讓方式（0.75元/點）。',          rating: 5.0, postType: 'buy'  },
-    { id: 3, user: '張大頭', avatar: '張', type: 'Line Points',  pointAmount: 300,  cashOffer: 210,  note: '試算後還差 300 點，想找小額補點（0.70元/點）。',              rating: 4.5, postType: 'buy'  },
-    { id: 4, user: '蔡阿強', avatar: '蔡', type: 'Happy GO',     pointAmount: 2500, cashOffer: 1875, note: '遠東百貨 Happy GO 快到期，想找人補點（0.75元/點）。',          rating: 4.7, postType: 'buy'  },
-    { id: 5, user: '陳小美', avatar: '陳', type: 'Open Points',  pointAmount: 2000, cashOffer: 1500, note: '近期用不到，可討論轉讓方式與效期（0.75元/點）。',              rating: 4.9, postType: 'sell' },
-    { id: 6, user: '林阿土', avatar: '林', type: '全聯福利點',   pointAmount: 800,  cashOffer: 600,  note: '有多餘點數，可協助需要補點的人（0.75元/點）。',                rating: 4.7, postType: 'sell' },
-    { id: 7, user: '吳小玲', avatar: '吳', type: 'Line Points',  pointAmount: 2500, cashOffer: 1750, note: '多餘的 Line Points，可討論轉讓，效期充足（0.70元/點）。',       rating: 4.6, postType: 'sell' },
-    { id: 8, user: '黃建民', avatar: '黃', type: 'Happy GO',     pointAmount: 5000, cashOffer: 3750, note: '長期累積，近期無大額消費需求，可分批轉讓（0.75元/點）。',       rating: 5.0, postType: 'sell' },
-    { id: 9, user: '蔣大方', avatar: '蔣', type: 'Open Points',  pointAmount: 1800, cashOffer: 0,    note: '快到期，免費轉讓給需要的人，先聯繫確認效期。',    rating: 4.9, postType: 'gift' },
-    { id: 10, user: '鄭小芸', avatar: '鄭', type: '全聯福利點', pointAmount: 600,  cashOffer: 0,    note: '一次性消費累積，不常購物，送給有需要的人。',           rating: 4.8, postType: 'gift' },
-
-    // === 航空哩程媒合 — P2P市價約 0.45元/里 ===
-    // 雙方自行確認是否符合航空公司T&C，平台僅提供媒合資訊
-    { id: 11, user: '陳大富', avatar: '陳', type: '長榮哩程',  pointAmount: 5000,  cashOffer: 2250, note: '哩程快到期（效期2026/12），試算缺口後多餘（0.45元/里）。', rating: 4.8, postType: 'sell' },
-    { id: 12, user: '吳太太', avatar: '吳', type: '亞洲萬里通', pointAmount: 8000, cashOffer: 3600, note: '累積太多，近期無兌換計畫（0.45元/里）。可先聊效期限制。',     rating: 4.7, postType: 'sell' },
-    { id: 13, user: '李先生', avatar: '李', type: '長榮哩程',  pointAmount: 12000, cashOffer: 0,   note: '哩程11月到期，無法使用，希望資訊提供給有需要的人。',       rating: 5.0, postType: 'gift' },
-    { id: 14, user: '周阿明', avatar: '周', type: '華航哩程',  pointAmount: 3500,  cashOffer: 1575, note: '試算後發現哩程足夠，多餘部分可供參考（0.45元/里）。', rating: 4.6, postType: 'sell' },
+    // 用户可以通过「我想補點」或「我有點可賣」发布需求
+    // 这里为空，等待真实用户发布
 ];
 
 const mockChats = [
-    { id: 1, userId: 1, user: '王小明', avatar: '王', lastMsg: '請問450元可以嗎？', time: '10:30', unread: 1 },
-    { id: 2, userId: 2, user: '李美美', avatar: '李', lastMsg: '我已經轉帳囉，確認一下', time: '昨天', unread: 0 },
+    // 用户之间的聊天记录存储在这里
+    // 初始为空，用户开始交易后会有记录
 ];
 
 const mockReviews = [
-    { id: 1, user: '陳先生', rating: 5, text: '交易快速，回覆很親切！', date: '2026-05-18' },
-    { id: 2, user: '林小姐', rating: 4, text: '很順利的換到點數了。', date: '2026-05-15' },
-    { id: 3, user: '吳同學', rating: 5, text: '溝通清楚、回覆快速。', date: '2026-05-10' },
+    // 用户评价存储在这里
+    // 初始为空，用户交易完成后会有评价
 ];
 
 function escapeHTML(value) {
